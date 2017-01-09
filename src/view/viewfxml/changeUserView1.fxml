@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity" prefHeight="374.0" prefWidth="358.0" xmlns="http://javafx.com/javafx/8"
+            fx:controller="view.ChangeUserController1">
+    <children>
+        <AnchorPane fx:id="loginPane" layoutY="-4.0" prefHeight="390.0" prefWidth="374.0">
+            <children>
+                <MenuBar layoutX="6.0" layoutY="8.0">
+                    <menus>
+                        <Menu mnemonicParsing="false" text="File">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Close"/>
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Edit">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Delete"/>
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Help">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="About"/>
+                            </items>
+                        </Menu>
+                    </menus>
+                </MenuBar>
+                <PasswordField id="passwordText" fx:id="passwordText" layoutX="28.0" layoutY="247.0"
+                               promptText="Lösenord">
+                    <cursor>
+                        <Cursor fx:constant="HAND"/>
+                    </cursor>
+                </PasswordField>
+                <TextField id="userNameText" fx:id="userNameText" disable="true" layoutX="28.0" layoutY="99.0"
+                           opacity="0.6">
+                    <cursor>
+                        <Cursor fx:constant="DISAPPEAR"/>
+                    </cursor>
+                    <effect>
+                        <ColorAdjust/>
+                    </effect>
+                </TextField>
+                <Label layoutX="29.0" layoutY="82.0" text="Användarnamn"/>
+                <Label layoutX="29.0" layoutY="230.0" text="Lösenord"/>
+                <Button layoutX="14.0" layoutY="337.0" mnemonicParsing="false" onAction="#updateUserClick"
+                        text="Uppdatera kontouppgifter"/>
+                <Label layoutX="55.0" layoutY="52.0" prefHeight="30.0" prefWidth="265.0"
+                       text="Ändra era användaruppgifter">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </Label>
+                <Label layoutX="29.0" layoutY="279.0" prefHeight="17.0" prefWidth="107.0" text="Verifiera lösenord"/>
+                <PasswordField id="passwordCheckTest" fx:id="passwordCheckerText" layoutX="28.0" layoutY="296.0"
+                               promptText="Lösenord">
+                    <cursor>
+                        <Cursor fx:constant="HAND"/>
+                    </cursor>
+                </PasswordField>
+                <Label layoutX="29.0" layoutY="136.0" text="Förnamn"/>
+                <TextField id="fNameText" fx:id="fNameText" layoutX="28.0" layoutY="153.0">
+                    <cursor>
+                        <Cursor fx:constant="HAND"/>
+                    </cursor>
+                </TextField>
+                <TextField id="lnameText" fx:id="lNameText" layoutX="193.0" layoutY="153.0">
+                    <cursor>
+                        <Cursor fx:constant="HAND"/>
+                    </cursor>
+                </TextField>
+                <Label layoutX="194.0" layoutY="136.0" text="Efteramn"/>
+                <Label layoutX="194.0" layoutY="178.0" text="Telefonnummer"/>
+                <TextField id="phoneText" fx:id="phoneText" layoutX="193.0" layoutY="195.0">
+                    <cursor>
+                        <Cursor fx:constant="HAND"/>
+                    </cursor>
+                </TextField>
+                <TextField id="mailText" fx:id="mailText" layoutX="28.0" layoutY="195.0">
+                    <cursor>
+                        <Cursor fx:constant="HAND"/>
+                    </cursor>
+                </TextField>
+                <Label layoutX="29.0" layoutY="178.0" text="E-Mail"/>
+                <Label id="uniqeTextIdLabel" fx:id="passwordErrorMatchLabel" layoutX="179.0" layoutY="276.0"
+                       text="Lösenorden matchar inte" textFill="#f0e9eb" visible="false"/>
+                <Button layoutX="297.0" layoutY="337.0" mnemonicParsing="false" onAction="#abortClick" text="Återgå"/>
+                <Button layoutX="177.0" layoutY="337.0" mnemonicParsing="false" onAction="#dissableClick"
+                        text="Avaktivera konto" textFill="#e50000">
+                    <font>
+                        <Font name="System Bold" size="12.0"/>
+                    </font>
+                </Button>
+
+            </children>
+            <cursor>
+                <Cursor fx:constant="OPEN_HAND"/>
+            </cursor>
+        </AnchorPane>
+    </children>
+</AnchorPane>

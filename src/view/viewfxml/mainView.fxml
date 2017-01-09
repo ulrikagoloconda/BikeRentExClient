@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="621.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainVewController">
+   <children>
+       <AnchorPane layoutX="-27.0" prefHeight="621.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+           <children>
+               <MenuBar layoutY="2.0" prefHeight="25.0" prefWidth="132.0">
+                   <menus>
+                       <Menu mnemonicParsing="false" text="File">
+                           <items>
+                               <MenuItem mnemonicParsing="false" text="Close" />
+                           </items>
+                       </Menu>
+                       <Menu mnemonicParsing="false" text="Edit">
+                           <items>
+                               <MenuItem mnemonicParsing="false" text="Delete" />
+                           </items>
+                       </Menu>
+                       <Menu mnemonicParsing="false" text="Help">
+                           <items>
+                               <MenuItem mnemonicParsing="false" text="About" />
+                           </items>
+                       </Menu>
+                   </menus>
+               </MenuBar>
+            <Label layoutX="202.0" layoutY="10.0" prefHeight="34.0" prefWidth="132.0" text="Bike For Rent! " AnchorPane.rightAnchor="266.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Button layoutX="38.0" layoutY="223.0" mnemonicParsing="false" onAction="#searchAvailableBikes" text="Sök ledig cykel" />
+            <Label layoutX="40.0" layoutY="182.0" text="Vilka cyklar är lediga?">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <AnchorPane fx:id="userInfoPane" layoutX="19.0" layoutY="40.0" prefHeight="119.0" prefWidth="245.0" AnchorPane.leftAnchor="35.0" AnchorPane.topAnchor="45.0">
+               <children>
+                  <Label text="Du är inloggad som: ">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutY="24.0" prefHeight="17.0" text="userName: " AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="25.0" />
+                  <Label id="memberLevelLabel" layoutY="41.0" prefHeight="17.0" text="level:" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="45.0" />
+                  <Label layoutX="-3.0" layoutY="60.0" prefHeight="17.0" text="Totalt antal lånade cyklar:" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="65.0" />
+                  <Label layoutY="87.0" prefHeight="17.0" text="Aktuella lån: " AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="85.0" />
+                  <Button layoutX="195.0" layoutY="81.0" mnemonicParsing="false" onAction="#showChangeUserView" text="Ändra" AnchorPane.leftAnchor="195.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="85.0" />
+                  <Label id="numberOfLoanedBikesLabel" fx:id="numberOfLoanedBikesLabel" layoutX="146.0" layoutY="66.0" prefHeight="17.0" text="2" />
+                  <Label id="activeLoanLabel" fx:id="activeLoanLabel" layoutX="73.0" layoutY="85.0" prefHeight="17.0" text="0" />
+                  <Label id="memberLevelLabel" fx:id="memberLevelLabel" layoutX="31.0" layoutY="45.0" prefHeight="17.0" text="10" />
+                  <Label id="userNameLabel" fx:id="userNameLabel" layoutX="63.0" layoutY="25.0" prefHeight="17.0" text="kalle 123" />
+                  <Button layoutX="194.0" layoutY="50.0" mnemonicParsing="false" onAction="#showUsersBikes" text="Aktuella lån" />
+               </children>
+            </AnchorPane>
+            <Label layoutX="209.0" layoutY="182.0" text="Vilken cykel söker du?">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="mainImage" fitHeight="108.0" fitWidth="160.0" layoutX="382.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="58.0" />
+            <Label layoutX="406.0" layoutY="182.0" text="Vill du se lite statistik? ">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Button layoutX="404.0" layoutY="223.0" mnemonicParsing="false" onAction="#showStatClick" text="Visa statistik" />
+            <Button fx:id="adminBtn" layoutX="434.0" layoutY="15.0" mnemonicParsing="false" onAction="#showAdminView" text="Administrera Bike Rent" />
+            <Button fx:id="executeLoanBtn" layoutX="466.0" layoutY="582.0" mnemonicParsing="false" onAction="#executeBikeLoan" text="Låna cykeln" AnchorPane.bottomAnchor="10.0" />
+            <GridPane fx:id="gridPane" layoutX="27.0" layoutY="350.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="226.0" prefWidth="541.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="52.0" minHeight="10.0" prefHeight="15.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="65.0" minHeight="10.0" prefHeight="65.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="65.0" minHeight="10.0" prefHeight="65.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="65.0" minHeight="10.0" prefHeight="65.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <ImageView fx:id="imageView1" fitHeight="62.0" fitWidth="89.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" />
+                  <ImageView fx:id="imabeVew2" fitHeight="62.0" fitWidth="89.0" layoutX="10.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2" />
+                  <ImageView fx:id="imageView2" fitHeight="62.0" fitWidth="89.0" layoutX="10.0" layoutY="108.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3" />
+               </children>
+            </GridPane>
+            <Label layoutX="40.0" layoutY="294.0" text="Cyklar: ">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Button fx:id="netBtn" layoutX="492.0" layoutY="298.0" mnemonicParsing="false" onAction="#nextBikesOnList" text="Nästa -&gt;" />
+            <Label fx:id="messageLabel" layoutX="151.0" layoutY="296.0" AnchorPane.leftAnchor="130.0" />
+            <ComboBox fx:id="combobox" layoutX="209.0" layoutY="223.0" onAction="#setSearchResult" onInputMethodTextChanged="#popuateComboBox" onKeyPressed="#popuateComboBox" onKeyReleased="#popuateComboBox" prefWidth="150.0" />
+            <Label id="memberLevelLabel" fx:id="statLabel" layoutX="511.0" layoutY="257.0" prefHeight="17.0" text="10" />
+            <Label id="memberLevelLabel" layoutX="406.0" layoutY="257.0" prefHeight="17.0" text="Tillgängliga cyklar:" />
+            <Button fx:id="returnBtn" layoutX="347.0" layoutY="586.0" mnemonicParsing="false" onAction="#returnBike" text="Återlämna cykeln" />
+            <Button layoutX="27.0" layoutY="586.0" mnemonicParsing="false" onAction="#closeSession" text="Logga ut" />
+   
+           </children>
+       </AnchorPane>
+   </children>
+</AnchorPane>
