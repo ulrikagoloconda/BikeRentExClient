@@ -2,10 +2,12 @@ package ServerConnecttion;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import helpers.FileHelper;
 import model.Bike;
 import model.BikeUser;
 import model.Bikes;
 import model.MainViewInformaiton;
+import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -17,11 +19,13 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import view.ErrorView;
 import view.Main;
+
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.apache.http.HttpHeaders.USER_AGENT;
@@ -662,5 +666,21 @@ public class ServerCallImpl implements ServerCall {
         }
         return mvi;
     }
+
+  @Override
+  public void fetchStatFile() {
+    String urlString = "http://localhost:8080/text/resources/fetchStatFile";
+    File statFile = null;
+
+    String filePath = "c:\\Temp\\temp.pdf";
+
+    try {
+      URL website = new URL(urlString);
+      FileUtils.copyURLToFile(website, new File(filePath));
+      FileHelper.openPDF(filePath);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 }
 

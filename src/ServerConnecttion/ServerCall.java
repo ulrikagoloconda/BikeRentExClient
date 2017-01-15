@@ -53,4 +53,6 @@ public interface ServerCall {
     //Metoden hämtar data för att kunna uppdater huvudfönstrets statistk och användaruppgifter
     MainViewInformaiton fetchUpdatedInfo();
 
+  //Metoden hämtar & öppnar filen
+    void fetchStatFile();
 }

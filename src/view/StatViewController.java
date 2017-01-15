@@ -1,5 +1,7 @@
 package view;
 
+import ServerConnecttion.ServerCall;
+import ServerConnecttion.ServerCallImpl;
 import helpers.DoughnutChart;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,8 +11,11 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Side;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import model.MainViewInformaiton;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -24,7 +29,7 @@ public class StatViewController implements Initializable {
   private Label statLabel;
   @FXML
   private PieChart pieChart;
-  private String errorTitle = "Fel i huvidfönster";
+  private String errorTitle = "Fel i huvudfönster";
 
   public static void showStatView(String labelID1, Integer stat0To100ID1, String labelID2, Integer stat0To100ID2) {
 
@@ -96,5 +101,21 @@ public class StatViewController implements Initializable {
 
   public void showMainView(Event event) {
     Main.getSpider().getMain().showMainView();
+  }
+
+  public void getStatButtonClicked(MouseEvent mouseEvent) {
+    //TODO:
+    //Get the stat..
+    //String fileNameOfPDF = theStats.generatePDFStatsGetFileName();
+    File  StatFile = getBikesRentStatistic();
+
+
+  }
+
+  public File getBikesRentStatistic() {
+    ServerCall serverCall;
+    serverCall = new ServerCallImpl();
+
+    return serverCall.fetchStatFile();
   }
 }
