@@ -728,7 +728,8 @@ public class ServerCallImpl implements ServerCall {
       FileUtils.copyURLToFile(website, new File(filePath));
       //open the PDF from storred place in client PC.
       FileHelper.openPDF(filePath);
-      String textContent = "Ta bort filen: " + filePath;
+      //
+      String textContent = "Ta bort filen: " + filePath + ", svara först när ni stängt PDF-filen";
       boolean choice = ChoiceDialogView.showChoiceDialogYESorNO(textContent);
       if (choice) {
         //clean the tempfiles!
