@@ -34,7 +34,9 @@ import static org.apache.http.HttpHeaders.USER_AGENT;
  * Created by Goloconda on 2016-12-01.
  */
 public class ServerCallImpl implements ServerCall {
-    @Override
+  private String IP = null;
+
+  @Override
     public BikeUser login(String userName, String passw) {
         //start: "try login"
         BikeUser user = new BikeUser();
@@ -671,7 +673,7 @@ public class ServerCallImpl implements ServerCall {
   public void fetchStatFile() {
     String urlString = "http://localhost:8080/text/resources/fetchStatFile";
     File statFile = null;
-    String returnedPath = null;
+    String URLpathFile = null;
     try {
       Gson gson = new Gson();
       HttpClient client = HttpClientBuilder.create().build();
@@ -692,14 +694,14 @@ public class ServerCallImpl implements ServerCall {
       System.out.println("Code " + response.getStatusLine().getStatusCode());
       String code = response.getStatusLine().getStatusCode() + "";
       if (response.getStatusLine().getStatusCode() == 200) {
-        returnedPath = EntityUtils.toString(response.getEntity());
-        System.out.println("The return path to the statfile:" + returnedPath);
+        URLpathFile = EntityUtils.toString(response.getEntity());
+        System.out.println("The return path to the statfile:" + URLpathFile);
       } else {
         ResponceCodeCecker.checkCode(code);
         closeSession();
         Main.getSpider().getMain().showLoginView();
       }
-      if (returnedPath == null){
+      if (URLpathFile == null){
         ResponceCodeCecker.checkCode(code);
         closeSession();
         Main.getSpider().getMain().showLoginView();
@@ -711,8 +713,9 @@ public class ServerCallImpl implements ServerCall {
       Main.getSpider().getMain().showLoginView();
     }
 
-    String filePath = "c:\\Temp\\"+ returnedPath;
-    urlString = "http://localhost:8080/text/resources/fetchStatFile";
+    String filePath = "c:\\Temp\\"+ URLpathFile;
+    String mailPath = null;
+    urlString = "http://" + IP + "/" + mailPath + "/" + URLpathFile;
     try {
       URL website = new URL(urlString);
       FileUtils.copyURLToFile(website, new File(filePath));
