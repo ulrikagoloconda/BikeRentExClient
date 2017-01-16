@@ -671,9 +671,48 @@ public class ServerCallImpl implements ServerCall {
   public void fetchStatFile() {
     String urlString = "http://localhost:8080/text/resources/fetchStatFile";
     File statFile = null;
+    String returnedPath = null;
+    try {
+      Gson gson = new Gson();
+      HttpClient client = HttpClientBuilder.create().build();
+      HttpPost requsetPost = new HttpPost(urlString);
+      requsetPost.addHeader("User-Agent123", USER_AGENT);
+      String token = Main.getSpider().getMain().getMainVI().getCurrentUser().getSessionToken();
+      int userID = Main.getSpider().getMain().getMainVI().getCurrentUser().getUserID();
+      int userMemberLevel = Main.getSpider().getMain().getMainVI().getCurrentUser().getMemberLevel();
+      MainViewInformaiton mvi = new MainViewInformaiton();
+      BikeUser user = new BikeUser();
+      user.setSessionToken(token);
+      user.setUserID(userID);
+      mvi.setCurrentUser(user);
+      String json = gson.toJson(mvi);
+      HttpEntity entity = new StringEntity(json);
+      requsetPost.setEntity(entity);
+      HttpResponse response = client.execute(requsetPost);
+      System.out.println("Code " + response.getStatusLine().getStatusCode());
+      String code = response.getStatusLine().getStatusCode() + "";
+      if (response.getStatusLine().getStatusCode() == 200) {
+        returnedPath = EntityUtils.toString(response.getEntity());
+        System.out.println("The return path to the statfile:" + returnedPath);
+      } else {
+        ResponceCodeCecker.checkCode(code);
+        closeSession();
+        Main.getSpider().getMain().showLoginView();
+      }
+      if (returnedPath == null){
+        ResponceCodeCecker.checkCode(code);
+        closeSession();
+        Main.getSpider().getMain().showLoginView();
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+      ErrorView.showError("Serverfel", "Fel hos servern", "Försök igen senare", 0, new Exception(500 + "Fel hos server." + ""));
+      closeSession();
+      Main.getSpider().getMain().showLoginView();
+    }
 
-    String filePath = "c:\\Temp\\temp.pdf";
-
+    String filePath = "c:\\Temp\\"+ returnedPath;
+    urlString = "http://localhost:8080/text/resources/fetchStatFile";
     try {
       URL website = new URL(urlString);
       FileUtils.copyURLToFile(website, new File(filePath));
