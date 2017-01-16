@@ -671,6 +671,7 @@ public class ServerCallImpl implements ServerCall {
 
   @Override
   public void fetchStatFile() {
+    //TODO: http://stackoverflow.com/questions/18207116/displaying-pdf-in-javafx
     String urlString = "http://localhost:8080/text/resources/fetchStatFile";
     File statFile = null;
     String URLpathFile = null;
@@ -694,6 +695,7 @@ public class ServerCallImpl implements ServerCall {
       System.out.println("Code " + response.getStatusLine().getStatusCode());
       String code = response.getStatusLine().getStatusCode() + "";
       if (response.getStatusLine().getStatusCode() == 200) {
+        //get the filename from server
         URLpathFile = EntityUtils.toString(response.getEntity());
         System.out.println("The return path to the statfile:" + URLpathFile);
       } else {
@@ -708,17 +710,21 @@ public class ServerCallImpl implements ServerCall {
       }
     } catch (Exception e) {
       e.printStackTrace();
-      ErrorView.showError("Serverfel", "Fel hos servern", "Försök igen senare", 0, new Exception(500 + "Fel hos server." + ""));
+      ErrorView.showError("Serverfel_Stat", "Fel hos servern", "Försök igen senare", 0, new Exception(500 + "Fel hos server." + ""));
       closeSession();
       Main.getSpider().getMain().showLoginView();
     }
 
+    //prepere a file
     String filePath = "c:\\Temp\\"+ URLpathFile;
-    String mailPath = null;
-    urlString = "http://" + IP + "/" + mailPath + "/" + URLpathFile;
+    String mainStatPath = null;
+    //prepere a url to the PDF
+    urlString = "http://" + IP + "/" + mainStatPath + "/" + URLpathFile;
     try {
+      //get the PDF from storred place in server
       URL website = new URL(urlString);
       FileUtils.copyURLToFile(website, new File(filePath));
+      //open the PDF from storred place in client PC.
       FileHelper.openPDF(filePath);
     } catch (IOException e) {
       e.printStackTrace();
