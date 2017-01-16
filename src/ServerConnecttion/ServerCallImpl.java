@@ -3,6 +3,7 @@ package ServerConnecttion;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import helpers.FileHelper;
+import helpers.ProgramPathAndDir;
 import model.Bike;
 import model.BikeUser;
 import model.Bikes;
@@ -17,6 +18,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import view.ChoiceDialogView;
 import view.ErrorView;
 import view.Main;
 
@@ -726,6 +728,12 @@ public class ServerCallImpl implements ServerCall {
       FileUtils.copyURLToFile(website, new File(filePath));
       //open the PDF from storred place in client PC.
       FileHelper.openPDF(filePath);
+      String textContent = "Ta bort filen: " + filePath;
+      boolean choice = ChoiceDialogView.showChoiceDialogYESorNO(textContent);
+      if (choice) {
+        //clean the tempfiles!
+        ProgramPathAndDir.dumptempfiles(filePath);
+      }
     } catch (IOException e) {
       e.printStackTrace();
     }
