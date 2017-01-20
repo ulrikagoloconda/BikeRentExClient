@@ -1,10 +1,7 @@
 package helpers;
 
 import java.awt.*;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * @author Niklas Karlsson
@@ -44,4 +41,20 @@ public class FileHelper {
 
   }
 
+  public static void saveByteArrayToFile(String filePath, ByteArrayInputStream inputStream) throws IOException {
+    ByteArrayInputStream input = inputStream;
+    FileOutputStream output = new FileOutputStream(filePath);
+
+    int DEFAULT_BUFFER_SIZE = 1024;
+    byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
+    long count = 0;
+    int n = 0;
+
+    n = input.read(buffer, 0, DEFAULT_BUFFER_SIZE);
+
+    while (n >= 0) {
+      output.write(buffer, 0, n);
+      n = input.read(buffer, 0, DEFAULT_BUFFER_SIZE);
+    }
+  }
 }

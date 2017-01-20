@@ -1,5 +1,7 @@
 package model;
 
+import java.io.ByteArrayInputStream;
+
 /**
  * Created by Goloconda on 2016-11-30.
  */
@@ -15,12 +17,22 @@ public class MainViewInformaiton {
     private BikeUser alteredUser;
     private Bike newBike;
     private int rentedBikes;
+    private ByteArrayInputStream PdfStream;
 
     public MainViewInformaiton() {
 
     }
 
-    public BikeUser getCurrentUser() {
+  public ByteArrayInputStream getPdfStream() {
+    return PdfStream;
+  }
+
+  public void setPdfStream(ByteArrayInputStream pdfStream) {
+    PdfStream = pdfStream;
+  }
+
+
+  public BikeUser getCurrentUser() {
         return currentUser;
     }
 

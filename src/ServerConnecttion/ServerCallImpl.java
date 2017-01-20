@@ -8,7 +8,6 @@ import model.Bike;
 import model.BikeUser;
 import model.Bikes;
 import model.MainViewInformaiton;
-import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -22,10 +21,9 @@ import view.ChoiceDialogView;
 import view.ErrorView;
 import view.Main;
 
-import java.io.File;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Map;
@@ -675,8 +673,7 @@ public class ServerCallImpl implements ServerCall {
   public void fetchStatFile() {
     //TODO: http://stackoverflow.com/questions/18207116/displaying-pdf-in-javafx
     String urlString = "http://localhost:8080/text/resources/fetchStatFile";
-    File statFile = null;
-    String URLpathFile = null;
+    MainViewInformaiton mvi = null;
     try {
       Gson gson = new Gson();
       HttpClient client = HttpClientBuilder.create().build();
@@ -685,11 +682,12 @@ public class ServerCallImpl implements ServerCall {
       String token = Main.getSpider().getMain().getMainVI().getCurrentUser().getSessionToken();
       int userID = Main.getSpider().getMain().getMainVI().getCurrentUser().getUserID();
       int userMemberLevel = Main.getSpider().getMain().getMainVI().getCurrentUser().getMemberLevel();
-      MainViewInformaiton mvi = new MainViewInformaiton();
+      mvi = new MainViewInformaiton();
       BikeUser user = new BikeUser();
       user.setSessionToken(token);
       user.setUserID(userID);
       mvi.setCurrentUser(user);
+      mvi.setPdfStream(null);
       String json = gson.toJson(mvi);
       HttpEntity entity = new StringEntity(json);
       requsetPost.setEntity(entity);
@@ -697,16 +695,17 @@ public class ServerCallImpl implements ServerCall {
       System.out.println("Code " + response.getStatusLine().getStatusCode());
       String code = response.getStatusLine().getStatusCode() + "";
       if (response.getStatusLine().getStatusCode() == 200) {
-        //get the filename from server
-        URLpathFile = EntityUtils.toString(response.getEntity());
-        System.out.println("The return path to the statfile:" + URLpathFile);
+        //get the filen from server
+        String returnedJson = EntityUtils.toString(response.getEntity());
+        Gson gson1 = new Gson();
+        mvi = gson1.fromJson(returnedJson, MainViewInformaiton.class);
       } else {
         ResponceCodeCecker.checkCode(code);
         closeSession();
         Main.getSpider().getMain().showLoginView();
       }
-      if (URLpathFile == null){
-        ResponceCodeCecker.checkCode(code);
+      if (mvi.getPdfStream() == null){
+        ErrorView.showError("Serverfel_Stat", "Fel hos servern", "Försök igen senare", 0, new Exception("Ingen fil gennererades." + ""));
         closeSession();
         Main.getSpider().getMain().showLoginView();
       }
@@ -718,26 +717,27 @@ public class ServerCallImpl implements ServerCall {
     }
 
     //prepere a file
-    String filePath = "c:\\Temp\\"+ URLpathFile;
-    String mainStatPath = null;
-    //prepere a url to the PDF
-    urlString = "http://" + IP + "/" + mainStatPath + "/" + URLpathFile;
+    String fileName = "statPDF" + "" +".pdf";
+    String filePath = "c:\\Temp\\"+ fileName;
+    ByteArrayInputStream inputStream = mvi.getPdfStream();
+    //make the file
     try {
-      //get the PDF from storred place in server
-      URL website = new URL(urlString);
-      FileUtils.copyURLToFile(website, new File(filePath));
-      //open the PDF from storred place in client PC.
-      FileHelper.openPDF(filePath);
-      //
-      String textContent = "Ta bort filen: " + filePath + ", svara först när ni stängt PDF-filen";
-      boolean choice = ChoiceDialogView.showChoiceDialogYESorNO(textContent);
-      if (choice) {
-        //clean the tempfiles!
-        ProgramPathAndDir.dumptempfiles(filePath);
-      }
+      FileHelper.saveByteArrayToFile(filePath, inputStream);
     } catch (IOException e) {
       e.printStackTrace();
+      ErrorView.showError("KlientFel", "Fel, kan ej spara fil", "Försök igen senare", 0, e);
+      closeSession();
+      Main.getSpider().getMain().showLoginView();
+    }
+    FileHelper.openPDF(filePath);
+    //
+    String textContent = "Ta bort filen: " + filePath + ", svara först när ni stängt PDF-filen";
+    boolean choice = ChoiceDialogView.showChoiceDialogYESorNO(textContent);
+    if (choice) {
+      //clean the tempfiles!
+      ProgramPathAndDir.dumptempfiles(filePath);
     }
   }
+
 }
 
