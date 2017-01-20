@@ -10,12 +10,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Side;
 import javafx.scene.chart.PieChart;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
-import model.MainViewInformaiton;
 
-import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -27,6 +26,8 @@ import java.util.ResourceBundle;
 public class StatViewController implements Initializable {
   @FXML
   private Label statLabel;
+  @FXML
+  private Button statGenBtn;
   @FXML
   private PieChart pieChart;
   private String errorTitle = "Fel i huvudfönster";
@@ -76,6 +77,9 @@ public class StatViewController implements Initializable {
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     Main.getSpider().setStatViewContrller(this);
+    if (Main.getSpider().getMain().getMvi().getCurrentUser().getMemberLevel() != 10) {
+      statGenBtn.setVisible(false);
+    }
    //StatView.DoughnutChartView("Lediga cyklar",availableBikesStatistic(),"Upptagna cyklar", (100-availableBikesStatistic()) );
     StatView.DoughnutChartView("Lediga cyklar",25,"Upptagna cyklar", (100-25) );
     StatView.showStatView("Lediga cyklar", availableBikesStatistic(), "Upptagna cyklar", (100 - availableBikesStatistic()), pieChart);
@@ -107,15 +111,14 @@ public class StatViewController implements Initializable {
     //TODO:
     //Get the stat..
     //String fileNameOfPDF = theStats.generatePDFStatsGetFileName();
-    File  StatFile = getBikesRentStatistic();
+    getBikesRentStatistic();
 
 
   }
 
-  public File getBikesRentStatistic() {
+  public void getBikesRentStatistic() {
     ServerCall serverCall;
     serverCall = new ServerCallImpl();
-
-    return serverCall.fetchStatFile();
+    serverCall.fetchStatFile();
   }
 }

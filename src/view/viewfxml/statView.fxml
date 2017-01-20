@@ -22,7 +22,7 @@
             </font>
         </Label>
         <Button layoutX="483.0" layoutY="550.0" mnemonicParsing="false" onMouseClicked="#showMainView" text="Tillbaka " />
-      <Button layoutX="50.0" layoutY="550.0" mnemonicParsing="false" onMouseClicked="#getStatButtonClicked" text="Stat.gen">
+      <Button fx:id="statGenBtn" layoutX="50.0" layoutY="550.0" mnemonicParsing="false" onMouseClicked="#getStatButtonClicked" text="Stat.gen">
          <tooltip>
             <Tooltip id="statToolTipID" text="Gennerera Statestik" />
          </tooltip>
