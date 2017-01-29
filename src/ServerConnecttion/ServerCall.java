@@ -54,5 +54,5 @@ public interface ServerCall {
     MainViewInformaiton fetchUpdatedInfo();
 
   //Metoden hämtar & öppnar filen
-    void fetchStatFile();
+  MainViewInformaiton fetchStat();
 }

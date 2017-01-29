@@ -3,6 +3,8 @@ package view;
 import ServerConnecttion.ServerCall;
 import ServerConnecttion.ServerCallImpl;
 import helpers.DoughnutChart;
+import helpers.FileHelper;
+import helpers.ProgramPathAndDir;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -14,7 +16,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import model.MainViewInformaiton;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -119,6 +123,24 @@ public class StatViewController implements Initializable {
   public void getBikesRentStatistic() {
     ServerCall serverCall;
     serverCall = new ServerCallImpl();
-    serverCall.fetchStatFile();
+    MainViewInformaiton mvi = serverCall.fetchStat();
+    if (ChoiceDialogView.showChoiceDialogYESorNO("Temporary save the PDF to " + mvi.getPreferdPdfFileName() + "and open the PDF ?" )) {
+      try {
+        /*
+        //prepere a file
+        String fileName = "statPDF" + "" +".pdf";
+        String filePath = "c:\\Temp\\"+ fileName;
+         */
+        FileHelper.saveByteArrayToFile(mvi.getPreferdPdfFileName(), mvi.getPdfStream());
+        FileHelper.openPDF(mvi.getPreferdPdfFileName());
+        if (ChoiceDialogView.showChoiceDialogYESorNO("Remove the temporary saved file " + mvi.getPreferdPdfFileName() + "?" ))
+          ProgramPathAndDir.dumptempfiles(mvi.getPreferdPdfFileName());
+      } catch (IOException e) {
+        e.printStackTrace();
+        ErrorView.showError(errorTitle, "Fel vid inläsning av PDF data..", "Kontakta admin..", null, e);
+      }
+    }
+
+
   }
 }

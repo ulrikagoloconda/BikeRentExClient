@@ -2,8 +2,6 @@ package ServerConnecttion;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import helpers.FileHelper;
-import helpers.ProgramPathAndDir;
 import model.Bike;
 import model.BikeUser;
 import model.Bikes;
@@ -17,11 +15,9 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
-import view.ChoiceDialogView;
 import view.ErrorView;
 import view.Main;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -670,9 +666,9 @@ public class ServerCallImpl implements ServerCall {
     }
 
   @Override
-  public void fetchStatFile() {
+  public MainViewInformaiton fetchStat() {
     //TODO: http://stackoverflow.com/questions/18207116/displaying-pdf-in-javafx
-    String urlString = "http://localhost:8080/text/resources/fetchStatFile";
+    String urlString = "http://localhost:8080/text/resources/fetchStat";
     MainViewInformaiton mvi = null;
     try {
       Gson gson = new Gson();
@@ -688,6 +684,7 @@ public class ServerCallImpl implements ServerCall {
       user.setUserID(userID);
       mvi.setCurrentUser(user);
       mvi.setPdfStream(null);
+      mvi.setPreferdPdfFileName(null);
       String json = gson.toJson(mvi);
       HttpEntity entity = new StringEntity(json);
       requsetPost.setEntity(entity);
@@ -695,7 +692,7 @@ public class ServerCallImpl implements ServerCall {
       System.out.println("Code " + response.getStatusLine().getStatusCode());
       String code = response.getStatusLine().getStatusCode() + "";
       if (response.getStatusLine().getStatusCode() == 200) {
-        //get the filen from server
+        //get the file+path from server
         String returnedJson = EntityUtils.toString(response.getEntity());
         Gson gson1 = new Gson();
         mvi = gson1.fromJson(returnedJson, MainViewInformaiton.class);
@@ -716,6 +713,8 @@ public class ServerCallImpl implements ServerCall {
       Main.getSpider().getMain().showLoginView();
     }
 
+    return mvi;
+    /*
     //prepere a file
     String fileName = "statPDF" + "" +".pdf";
     String filePath = "c:\\Temp\\"+ fileName;
@@ -737,6 +736,7 @@ public class ServerCallImpl implements ServerCall {
       //clean the tempfiles!
       ProgramPathAndDir.dumptempfiles(filePath);
     }
+    */
   }
 
 }

@@ -18,10 +18,21 @@ public class MainViewInformaiton {
     private Bike newBike;
     private int rentedBikes;
     private ByteArrayInputStream PdfStream;
+    private String preferdPdfFileName;
 
     public MainViewInformaiton() {
 
     }
+
+  public String getPreferdPdfFileName() {
+    return preferdPdfFileName;
+  }
+
+  public void setPreferdPdfFileName(String preferdPdfFileName) {
+    this.preferdPdfFileName = preferdPdfFileName;
+  }
+
+
 
   public ByteArrayInputStream getPdfStream() {
     return PdfStream;
