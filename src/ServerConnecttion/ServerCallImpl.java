@@ -30,13 +30,13 @@ import static org.apache.http.HttpHeaders.USER_AGENT;
  * Created by Goloconda on 2016-12-01.
  */
 public class ServerCallImpl implements ServerCall {
-  private String IP = null;
+  private String IP = "http://localhost:8080/text/resources";
 
   @Override
     public BikeUser login(String userName, String passw) {
         //start: "try login"
         BikeUser user = new BikeUser();
-        String urlString = "http://localhost:8080/text/resources";
+        String urlString = IP;//"http://localhost:8080/text/resources";
         HttpClient client = HttpClientBuilder.create().build();
         HttpPost requsetPost = new HttpPost(urlString);
         JsonObject jsonObject = new JsonObject();
@@ -101,7 +101,7 @@ public class ServerCallImpl implements ServerCall {
 
     @Override
     public boolean createNewUser(BikeUser newUser) {
-        String urlString = "http://localhost:8080/text/resources/newUser";
+        String urlString = IP + "/newUser"; //http://localhost:8080/text/resources/newUser";
 
         HttpClient client = HttpClientBuilder.create().build();
         HttpPost requsetPost = new HttpPost(urlString);
@@ -319,7 +319,7 @@ public class ServerCallImpl implements ServerCall {
 
     @Override
     public Bike addBikeToDB(Bike newBike) {
-        String urlString = "http://localhost:8080/text/resources/newBike";
+        String urlString = IP + "/newBike"; // http://localhost:8080/text/resources/newBike";
         Bike returnedBike = null;
         try {
             Gson gson = new Gson();
@@ -361,7 +361,7 @@ public class ServerCallImpl implements ServerCall {
 
     @Override
     public String removeBikeFromDB(int bikeID) {
-        String urlString = "http://localhost:8080/text/resources/removeBike";
+        String urlString = IP + "/removeBike"; //http://localhost:8080/text/resources/removeBike";
         String mess = "Något har gått fel";
         try {
             HttpClient client = HttpClientBuilder.create().build();
@@ -568,7 +568,7 @@ public class ServerCallImpl implements ServerCall {
     @Override
     public ArrayList<Bike> getAllBikes() {
         long millisStart = Calendar.getInstance().getTimeInMillis();
-        String urlString = "http://localhost:8080/text/resources/getAllBikes";
+        String urlString = IP + "/getAllBikes"; //http://localhost:8080/text/resources/getAllBikes";
         Bikes bikes = null;
         try {
             Gson gson = new Gson();
@@ -618,7 +618,7 @@ public class ServerCallImpl implements ServerCall {
 
     @Override
     public MainViewInformaiton fetchUpdatedInfo() {
-        String urlString = "http://localhost:8080/text/resources/fetchUpdate";
+        String urlString = IP + "/fetchUpdate"; //http://localhost:8080/text/resources/fetchUpdate";
         MainViewInformaiton mvi = null;
         try {
             Gson gson = new Gson();
@@ -668,7 +668,7 @@ public class ServerCallImpl implements ServerCall {
   @Override
   public MainViewInformaiton fetchStat() {
     //TODO: http://stackoverflow.com/questions/18207116/displaying-pdf-in-javafx
-    String urlString = "http://localhost:8080/text/resources/fetchStat";
+    String urlString = IP + "/fetchStat"; //http://localhost:8080/text/resources/fetchStat";
     MainViewInformaiton mvi = null;
     try {
       Gson gson = new Gson();
