@@ -107,7 +107,14 @@ public class NewUserVewController implements Initializable {
         System.out.println("phone is to short!");
         ErrorView.showError(errorTitle, "fel vid uppdatering", "Kontrollera era uppgifter", currentUser.getUserID(), new Exception("phone is to short!"));
       } else {
-        int phone = Integer.parseInt(phoneString);
+        int phone = 0;
+        try {
+          phone = Integer.parseInt(phoneString);
+        } catch (NumberFormatException e) {
+          e.printStackTrace();
+          ErrorView.showError(errorTitle, "fel vid telefoninmatning", "Kontrollera era uppgifter", currentUser.getUserID(), e);
+
+        }
         System.out.println("we can now add some info");
         int in_memberlevel = 1;
         BikeUser newUser = new BikeUser(fName, lName, in_memberlevel, email, phone, userName, password);

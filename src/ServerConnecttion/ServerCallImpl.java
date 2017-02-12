@@ -31,6 +31,7 @@ import static org.apache.http.HttpHeaders.USER_AGENT;
  */
 public class ServerCallImpl implements ServerCall {
   private String IP = "http://localhost:8080/text/resources";
+// private String IP = "http://localhost:8080/text/resources";
 
   @Override
     public BikeUser login(String userName, String passw) {

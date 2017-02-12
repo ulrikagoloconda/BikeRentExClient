@@ -1,5 +1,7 @@
 package helpers;
 
+import org.apache.commons.io.FileUtils;
+
 import java.awt.*;
 import java.io.*;
 
@@ -41,7 +43,7 @@ public class FileHelper {
 
   }
 
-  public static void saveByteArrayToFile(String filePath, ByteArrayInputStream inputStream) throws IOException {
+  public static void saveByteArrayStreamToFile(String filePath, ByteArrayInputStream inputStream) throws IOException {
     ByteArrayInputStream input = inputStream;
     FileOutputStream output = new FileOutputStream(filePath);
 
@@ -56,5 +58,24 @@ public class FileHelper {
       output.write(buffer, 0, n);
       n = input.read(buffer, 0, DEFAULT_BUFFER_SIZE);
     }
+  }
+
+  public static void saveByteArrayToFile(String filePath, byte[] inputStream) throws IOException {
+    FileUtils.writeByteArrayToFile(new File(filePath), inputStream);
+    /*byte[] input = inputStream;
+    FileOutputStream output = new FileOutputStream(filePath);
+
+    int DEFAULT_BUFFER_SIZE = 1024;
+    byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
+    long count = 0;
+    int n = 0;
+
+    n = input.read(buffer, 0, DEFAULT_BUFFER_SIZE);
+
+    while (n >= 0) {
+      output.write(buffer, 0, n);
+      n = input.read(buffer, 0, DEFAULT_BUFFER_SIZE);
+    }
+    */
   }
 }

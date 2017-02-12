@@ -1,7 +1,5 @@
 package model;
 
-import java.io.ByteArrayInputStream;
-
 /**
  * Created by Goloconda on 2016-11-30.
  */
@@ -17,7 +15,8 @@ public class MainViewInformaiton {
     private BikeUser alteredUser;
     private Bike newBike;
     private int rentedBikes;
-    private ByteArrayInputStream PdfStream;
+    //private ByteArrayInputStream PdfStream;
+	private byte[] PdfStream;
     private String preferdPdfFileName;
 
     public MainViewInformaiton() {
@@ -33,7 +32,7 @@ public class MainViewInformaiton {
   }
 
 
-
+/*
   public ByteArrayInputStream getPdfStream() {
     return PdfStream;
   }
@@ -41,7 +40,14 @@ public class MainViewInformaiton {
   public void setPdfStream(ByteArrayInputStream pdfStream) {
     PdfStream = pdfStream;
   }
+*/
+  public byte[] getPdfStream() {
+    return PdfStream;
+  }
 
+  public void setPdfStream(byte[] pdfStream) {
+    PdfStream = pdfStream;
+  }
 
   public BikeUser getCurrentUser() {
         return currentUser;
