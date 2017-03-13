@@ -30,35 +30,11 @@
                         </Menu>
                     </menus>
                 </MenuBar>
-                <PasswordField id="passwordText" fx:id="passwordText" layoutX="28.0" layoutY="247.0"
-                               promptText="Lösenord">
-                    <cursor>
-                        <Cursor fx:constant="HAND"/>
-                    </cursor>
-                </PasswordField>
                 <TextField id="userNameText" fx:id="userNameText" layoutX="28.0" layoutY="99.0">
                     <cursor>
                         <Cursor fx:constant="HAND"/>
                     </cursor>
                 </TextField>
-                <Label layoutX="29.0" layoutY="82.0" text="Användarnamn"/>
-                <Label layoutX="29.0" layoutY="230.0" text="Lösenord"/>
-                <Button layoutX="14.0" layoutY="337.0" mnemonicParsing="false" onAction="#newUserClick"
-                        text="Skapa konto"/>
-                <Label layoutX="65.0" layoutY="52.0" prefHeight="30.0" prefWidth="256.0" text="Registrera ny användare">
-                    <font>
-                        <Font size="20.0"/>
-                    </font>
-                </Label>
-                <Label layoutX="29.0" layoutY="279.0" prefHeight="17.0" prefWidth="107.0" text="Verifiera lösenord"/>
-                <PasswordField id="passwordCheckTest" fx:id="passwordCheckerText" layoutX="28.0" layoutY="296.0"
-                               promptText="Lösenord">
-                    <cursor>
-                        <Cursor fx:constant="HAND"/>
-                    </cursor>
-                </PasswordField>
-                <Label id="uniqeTextIdLabel" layoutX="193.0" layoutY="103.0" text="(Måste vara unikt)"/>
-                <Label layoutX="29.0" layoutY="136.0" text="Förnamn"/>
                 <TextField id="fNameText" fx:id="fNameText" layoutX="28.0" layoutY="153.0">
                     <cursor>
                         <Cursor fx:constant="HAND"/>
@@ -69,18 +45,42 @@
                         <Cursor fx:constant="HAND"/>
                     </cursor>
                 </TextField>
-                <Label layoutX="194.0" layoutY="136.0" text="Efteramn"/>
-                <Label layoutX="194.0" layoutY="178.0" text="Telefonnummer"/>
-                <TextField id="phoneText" fx:id="phoneText" layoutX="193.0" layoutY="195.0">
-                    <cursor>
-                        <Cursor fx:constant="HAND"/>
-                    </cursor>
-                </TextField>
                 <TextField id="mailText" fx:id="mailText" layoutX="28.0" layoutY="195.0">
                     <cursor>
                         <Cursor fx:constant="HAND"/>
                     </cursor>
                 </TextField>
+                <TextField id="phoneText" fx:id="phoneText" layoutX="193.0" layoutY="195.0">
+                    <cursor>
+                        <Cursor fx:constant="HAND"/>
+                    </cursor>
+                </TextField>
+                <PasswordField id="passwordText" fx:id="passwordText" layoutX="28.0" layoutY="247.0"
+                               promptText="Lösenord">
+                    <cursor>
+                        <Cursor fx:constant="HAND"/>
+                    </cursor>
+                </PasswordField>
+                <PasswordField id="passwordCheckTest" fx:id="passwordCheckerText" layoutX="28.0" layoutY="296.0"
+                               promptText="Lösenord">
+                    <cursor>
+                        <Cursor fx:constant="HAND"/>
+                    </cursor>
+                </PasswordField>
+                <Label layoutX="29.0" layoutY="82.0" text="Användarnamn"/>
+                <Label layoutX="29.0" layoutY="230.0" text="Lösenord"/>
+                <Button layoutX="14.0" layoutY="337.0" mnemonicParsing="false" onAction="#newUserClick"
+                        text="Skapa konto"/>
+                <Label layoutX="65.0" layoutY="52.0" prefHeight="30.0" prefWidth="256.0" text="Registrera ny användare">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </Label>
+                <Label layoutX="29.0" layoutY="279.0" prefHeight="17.0" prefWidth="107.0" text="Verifiera lösenord"/>
+                <Label id="uniqeTextIdLabel" layoutX="193.0" layoutY="103.0" text="(Måste vara unikt)"/>
+                <Label layoutX="29.0" layoutY="136.0" text="Förnamn"/>
+                <Label layoutX="194.0" layoutY="136.0" text="Efteramn"/>
+                <Label layoutX="194.0" layoutY="178.0" text="Telefonnummer"/>
                 <Label layoutX="29.0" layoutY="178.0" text="E-Mail"/>
                 <Label id="uniqeTextIdLabel" fx:id="passwordErrorMatchLabel" layoutX="179.0" layoutY="276.0"
                        text="Lösenorden matchar inte" textFill="#f00c0c" visible="false"/>

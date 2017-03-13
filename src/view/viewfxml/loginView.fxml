@@ -28,8 +28,8 @@
                         </Menu>
                     </menus>
                 </MenuBar>
-                <PasswordField fx:id="passwordText" layoutX="260.0" layoutY="153.0" promptText="Lösenord"/>
                 <TextField fx:id="userNameText" layoutX="28.0" layoutY="153.0"/>
+                <PasswordField fx:id="passwordText" layoutX="260.0" layoutY="153.0" promptText="Lösenord"/>
                 <Label layoutX="29.0" layoutY="124.0" text="Användarnamn"/>
                 <Label layoutX="260.0" layoutY="124.0" text="Lösenord"/>
                 <Button layoutX="28.0" layoutY="200.0" mnemonicParsing="false" onMouseReleased="#logInClick"
