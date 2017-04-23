@@ -59,16 +59,13 @@ public class LoginVewController implements Initializable {
         String userName = userNameText.getText();
         String passw = passwordText.getText();
         currentUser = serverCall.login( userName,  passw);
-        System.out.println("phone from loging " + currentUser.getPhone());
         if (currentUser != null) {
             if (currentUser.getUserID() > 0) { //login = OK!!
                 showMainGui();
             } else { // wrong ...
-                System.out.println("Fel ...");
                 ErrorView.showError("Inloggningsfel-logInClick", "fel vid inloggning", "Fail", 0, new Exception("Returned something but was unexpected.."));
             }
         }else { // wrong ...
-            System.out.println("Fel ...");
             ErrorView.showError("Inloggningsfel-logInClick", "fel vid inloggning", "Fail", 0, new Exception("error..."));
         }
 

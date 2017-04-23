@@ -1,48 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-            minWidth="-Infinity" prefHeight="621.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8"
-            fx:controller="view.LoginVewController">
+
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="621.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.LoginVewController">
     <children>
         <AnchorPane fx:id="loginPane" layoutY="-4.0" prefHeight="628.0" prefWidth="600.0">
             <children>
-                <MenuBar layoutX="6.0" layoutY="8.0">
-                    <menus>
-                        <Menu mnemonicParsing="false" text="File">
-                            <items>
-                                <MenuItem mnemonicParsing="false" text="Close"/>
-                            </items>
-                        </Menu>
-                        <Menu mnemonicParsing="false" text="Edit">
-                            <items>
-                                <MenuItem mnemonicParsing="false" text="Delete"/>
-                            </items>
-                        </Menu>
-                        <Menu mnemonicParsing="false" text="Help">
-                            <items>
-                                <MenuItem mnemonicParsing="false" text="About"/>
-                            </items>
-                        </Menu>
-                    </menus>
-                </MenuBar>
-                <PasswordField fx:id="passwordText" layoutX="260.0" layoutY="153.0" promptText="Lösenord"/>
-                <TextField fx:id="userNameText" layoutX="28.0" layoutY="153.0"/>
-                <Label layoutX="29.0" layoutY="124.0" text="Användarnamn"/>
-                <Label layoutX="260.0" layoutY="124.0" text="Lösenord"/>
-                <Button layoutX="28.0" layoutY="200.0" mnemonicParsing="false" onMouseReleased="#logInClick"
-                        text="Logga in"/>
-                <Button layoutX="28.0" layoutY="241.0" mnemonicParsing="false" onAction="#newUserClick"
-                        text="Skapa konto"/>
+                <PasswordField fx:id="passwordText" layoutX="260.0" layoutY="153.0" promptText="Lösenord" />
+                <TextField fx:id="userNameText" layoutX="28.0" layoutY="153.0" />
+                <Label layoutX="29.0" layoutY="124.0" text="Användarnamn" />
+                <Label layoutX="260.0" layoutY="124.0" text="Lösenord" />
+                <Button layoutX="28.0" layoutY="200.0" mnemonicParsing="false" onMouseReleased="#logInClick" text="Logga in" />
+                <Button layoutX="28.0" layoutY="241.0" mnemonicParsing="false" onAction="#newUserClick" text="Skapa konto" />
                 <Label layoutX="123.0" layoutY="52.0" text="Yes, hyr en cykel nu!">
                     <font>
-                        <Font size="20.0"/>
+                        <Font size="20.0" />
                     </font>
                 </Label>
-                <Button layoutX="115.0" layoutY="200.0" mnemonicParsing="false" onAction="#showMainGui"
-                        onMouseClicked="#logInClick" text="Override"/>
 
             </children>
         </AnchorPane>

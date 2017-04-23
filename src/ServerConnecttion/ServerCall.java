@@ -3,6 +3,7 @@ package ServerConnecttion;
 import model.Bike;
 import model.BikeUser;
 import model.MainViewInformaiton;
+import model.PrestandaMeasurement;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -52,5 +53,7 @@ public interface ServerCall {
 
     //Metoden hämtar data för att kunna uppdater huvudfönstrets statistk och användaruppgifter
     MainViewInformaiton fetchUpdatedInfo();
+
+    void insertPrestandaMeasurment(PrestandaMeasurement prestandaMeasurement, String comment);
 
 }

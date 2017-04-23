@@ -14,6 +14,7 @@ public class SpiderView {
     private MainVewController mainView;
     private NewUserVewController newUserView;
     private StatViewController statViewController;
+    private PopupInfoController popupInfoController;
     private Main main;
 
     public SpiderView() {
@@ -90,5 +91,25 @@ public class SpiderView {
 
     public StatViewController getStatViewController() {
         return statViewController;
+    }
+
+    public ChangeUserController1 getChangeUserController() {
+        return changeUserController;
+    }
+
+    public void setChangeUserController(ChangeUserController1 changeUserController) {
+        this.changeUserController = changeUserController;
+    }
+
+    public void setStatViewController(StatViewController statViewController) {
+        this.statViewController = statViewController;
+    }
+
+    public PopupInfoController getPopupInfoController() {
+        return popupInfoController;
+    }
+
+    public void setPopupInfoController(PopupInfoController popupInfoController) {
+        this.popupInfoController = popupInfoController;
     }
 }

@@ -7,6 +7,9 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.BikeUser;
@@ -24,6 +27,7 @@ public class Main extends Application {
   private FXMLLoader changeUserViewLoader;
   private FXMLLoader changeTryLoader;
   private FXMLLoader addBikeLoader;
+  private FXMLLoader popupInfoLoader;
   private Scene loginScene;
   private Scene mainScene;
   private Scene adminScene;
@@ -32,9 +36,13 @@ public class Main extends Application {
   private Scene changeUserScene;
   private Scene newUserScene;
   private Scene statViewScean;
+  private Stage dialog;
   private BikeUser user;
   private MainViewInformaiton mvi;
   private ServerCall serverCall ;
+
+  public Main() {
+  }
 
   @Override
   public void start(Stage primaryStage) throws Exception {
@@ -68,6 +76,7 @@ public class Main extends Application {
     return spider;
   }
   public void showLoginView() {
+    System.out.println("Nu körs showLoginView");
     try {
       primaryStage.setScene(loginScene);
     } catch (Exception e) {
@@ -183,6 +192,28 @@ public class Main extends Application {
     } else {
       primaryStage.setScene(addBikeScene);
     }
+  }
+
+  public void showPupupInfo(String headLine, String message, String buttonMessage){
+    try {
+       dialog = new Stage();
+      dialog.initModality(Modality.APPLICATION_MODAL);
+      dialog.initOwner(primaryStage);
+      popupInfoLoader = new FXMLLoader(getClass().getResource("../view/viewfxml/popupInfoView.fxml"));
+      Parent popupRoot = popupInfoLoader.load();
+      Scene dialogScene = new Scene(popupRoot);
+      dialog.setScene(dialogScene);
+      Main.getSpider().getPopupInfoController().setMessage(headLine,message,buttonMessage);
+      dialog.show();
+
+
+    }catch (Exception e ){
+      e.printStackTrace();
+    }
+  }
+
+  public void closePopup(){
+    dialog.close();
   }
   public MainViewInformaiton getMvi() {
     return mvi;

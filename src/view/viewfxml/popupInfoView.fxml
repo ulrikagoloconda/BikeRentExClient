@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="345.0" prefWidth="329.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.PopupInfoController">
+   <children>
+      <Button fx:id="okButton" layoutX="200.0" layoutY="290.0" mnemonicParsing="false" onAction="#userOk" prefHeight="25.0" prefWidth="112.0" text="Ok, jag förstår" />
+      <Label fx:id="headLine" contentDisplay="RIGHT" layoutX="34.0" layoutY="35.0" prefHeight="42.0" prefWidth="319.0" text="Rubrik">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <TextArea fx:id="infoTextArea" layoutX="34.0" layoutY="90.0" prefHeight="148.0" prefWidth="227.0" text="Iformations" />
+   </children>
+</AnchorPane>

@@ -32,7 +32,6 @@ public class ErrorView {
     String exceptionText = sw.toString();
 
     Label label = new Label("The exception stacktrace was:");
-    System.out.println("**************  userID to errorlog: " + userId + " ***********");
     //SELECT insert_new_ErrorEvent('cykeltur', 'errortest...1234ÅÖÄ');
     if (userId == null) {
       userId = 0;

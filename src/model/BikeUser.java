@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.time.Year;
 import java.util.ArrayList;
 
 /**
@@ -13,6 +14,8 @@ public class BikeUser {
     private String userName;
     private String fName;
     private String lName;
+    private String gender;
+    private Year birthYear;
     private int memberLevel;
     private String email;
     private int phone;
@@ -21,25 +24,30 @@ public class BikeUser {
     private String sessionToken;
     private ArrayList<Bike> currentBikeLoans;
     private ArrayList<Integer> totalBikeLoans;
+    private PrestandaMeasurement mesaurment;
 
     public BikeUser() {
         this.sessionToken= "-1";
     }
 
-    public BikeUser(String userName, String fName, String lName, int memberLevel, String email, int phone, LocalDate memberSince) {
+    public BikeUser(String userName, String fName, String lName, String gender, Year birthYear, int memberLevel, String email, int phone, LocalDate memberSince) {
         this.userName = userName;
         this.fName = fName;
         this.lName = lName;
+        this.gender = gender;
+        this.birthYear = birthYear;
         this.memberLevel = memberLevel;
         this.email = email;
         this.phone = phone;
         this.memberSince = memberSince;
         this.sessionToken= "-1";
     }
-    public BikeUser(String fName, String lName, int in_memberlevel, String email, int phone, String userName, String password){
+    public BikeUser(String fName, String lName, String gender, Year birthYear, int in_memberlevel, String email, int phone, String userName, String password){
     this.fName = fName;
     this.lName = lName;
-    this.memberLevel = in_memberlevel;
+        this.gender = gender;
+        this.birthYear = birthYear;
+        this.memberLevel = in_memberlevel;
     this.email = email;
     this.phone = phone;
     this.userName = userName;
@@ -141,6 +149,30 @@ public class BikeUser {
 
     public void setSessionToken(String sessionToken) {
         this.sessionToken = sessionToken;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public Year getBirthYear() {
+        return birthYear;
+    }
+
+    public void setBirthYear(Year birthYear) {
+        this.birthYear = birthYear;
+    }
+
+    public PrestandaMeasurement getMesaurment() {
+        return mesaurment;
+    }
+
+    public void setMesaurment(PrestandaMeasurement mesaurment) {
+        this.mesaurment = mesaurment;
     }
 }
 

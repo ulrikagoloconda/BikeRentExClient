@@ -2,10 +2,7 @@ package ServerConnecttion;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import model.Bike;
-import model.BikeUser;
-import model.Bikes;
-import model.MainViewInformaiton;
+import model.*;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -21,7 +18,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.apache.http.HttpHeaders.USER_AGENT;
@@ -30,6 +26,7 @@ import static org.apache.http.HttpHeaders.USER_AGENT;
  * Created by Goloconda on 2016-12-01.
  */
 public class ServerCallImpl implements ServerCall {
+   private static PrestandaMeasurement staticMeasurment;
     @Override
     public BikeUser login(String userName, String passw) {
         //start: "try login"
@@ -78,7 +75,7 @@ public class ServerCallImpl implements ServerCall {
         } else {
             Gson gson = new Gson();
             MainViewInformaiton mvi = gson.fromJson(json, MainViewInformaiton.class);
-            System.out.println("totalloanslient mm:" + mvi.getCurrentUser().getCurrentBikeLoans() + " & " + mvi.getCurrentUser().getTotalBikeLoans() + " phone : " + mvi.getCurrentUser().getPhone() );
+           // System.out.println("totalloanslient mm:" + mvi.getCurrentUser().getCurrentBikeLoans() + " & " + mvi.getCurrentUser().getTotalBikeLoans() + " phone : " + mvi.getCurrentUser().getPhone() );
 
             if (mvi.getCurrentUser().getUserID() > 0) { //login = OK!!
                 user = mvi.getCurrentUser();
@@ -117,10 +114,8 @@ public class ServerCallImpl implements ServerCall {
             requsetPost.addHeader("User-Agent123", USER_AGENT);
             HttpResponse response = client.execute(requsetPost);
             httpResponseCode = response.getStatusLine().getStatusCode();
-            System.out.println("Code " + httpResponseCode);
             //TODO borde kolla att det är status 200, annars händer nåt bäääd
             json = EntityUtils.toString(response.getEntity());
-            System.out.println(json);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             errorText = e.toString();
@@ -140,7 +135,6 @@ public class ServerCallImpl implements ServerCall {
         } else {
             gson = new Gson();
             boolean isAddedOk = gson.fromJson(json, boolean.class);
-            System.out.println("tadded OK: " + isAddedOk);
 
             return isAddedOk;
 
@@ -165,7 +159,6 @@ public class ServerCallImpl implements ServerCall {
                 oldUser.setSessionToken(token);
                 alteredUser.setSessionToken(token);
                 oldUser.setUserID(userID);
-                System.out.print("Servercall ex phone : " +  oldUser.getPhone());
                 alteredUser.setUserID(userID);
                 mvi.setOldUser(oldUser);
                 mvi.setCurrentUser(oldUser);
@@ -175,11 +168,9 @@ public class ServerCallImpl implements ServerCall {
                 HttpEntity entity = new StringEntity(json);
                 requsetPost.setEntity(entity);
                 HttpResponse response = client.execute(requsetPost);
-                System.out.println("Code " + response.getStatusLine().getStatusCode());
                 String code = response.getStatusLine().getStatusCode() + "";
                 if (response.getStatusLine().getStatusCode() == 200) {
                     String returnedJson = EntityUtils.toString(response.getEntity());
-                    System.out.println(returnedJson);
                     Gson gson1 = new Gson();
                     isReturnOK = gson1.fromJson(returnedJson, boolean.class);
                     return isReturnOK;
@@ -199,6 +190,7 @@ public class ServerCallImpl implements ServerCall {
 
     @Override
     public ArrayList<Bike> getAvailableBikes() {
+       PrestandaMeasurement mesaurment = Main.getSpider().getMainView().getPrestandaMesaurment();
         Gson gson = new Gson();
         Bikes bikes = null;
         String url = "http://localhost:8080/text/resources/availableBikes";
@@ -206,32 +198,33 @@ public class ServerCallImpl implements ServerCall {
             HttpClient client = HttpClientBuilder.create().build();
             HttpPost requsetPost = new HttpPost(url);
             requsetPost.addHeader("User-Agent123", USER_AGENT);
-            JsonObject jsonObject = new JsonObject();
+            BikeUser user = new BikeUser();
             String token = Main.getSpider().getMain().getMainVI().getCurrentUser().getSessionToken();
             int userID = Main.getSpider().getMain().getMainVI().getCurrentUser().getUserID();
-            jsonObject.addProperty("sessionToken", token);
-            jsonObject.addProperty("userID", userID);
-            String valuePair = jsonObject.toString();
-            HttpEntity entity = new StringEntity(valuePair);
+            user.setSessionToken(token);
+            user.setUserID(userID);
+            user.setMesaurment(mesaurment);
+            Gson gson1 = new Gson();
+            String json = gson1.toJson(user);
+            HttpEntity entity = new StringEntity(json);
             requsetPost.setEntity(entity);
             long millisStart = Calendar.getInstance().getTimeInMillis();
-            System.out.println("Start: " + millisStart);
-
-
             HttpResponse response = client.execute(requsetPost);
             long millisStop = Calendar.getInstance().getTimeInMillis();
-            System.out.println("execute Tidsåtgång: " + (millisStop - millisStart) + " millisekunder");
-
-            System.out.println("Code " + response.getStatusLine().getStatusCode());
+            double execute = millisStop - millisStart;
+            mesaurment.setExecuteSec(execute/1000);
             String code = response.getStatusLine().getStatusCode() + "";
             if (response.getStatusLine().getStatusCode() == 200) {
-                System.out.println("i if ");
-                String json = EntityUtils.toString(response.getEntity());
-
+                String json1 = EntityUtils.toString(response.getEntity());
                 long millisStart1 = Calendar.getInstance().getTimeInMillis();
-                bikes = gson.fromJson(json, Bikes.class);
+                bikes = gson.fromJson(json1, Bikes.class);
+                PrestandaMeasurement tempMeas = bikes.getPrestandaMeasurement();
                 long millisStop1 = Calendar.getInstance().getTimeInMillis();
-                System.out.println("Tidsåtgång fromJson: " + (millisStop1 - millisStart1) + " millisekunder");
+                double fromJson = millisStop1 - millisStart1/1000;
+                mesaurment.setGsonFromJsonSec(fromJson);
+                mesaurment.setDbProcedureSec(tempMeas.getDbProcedureSec());
+                mesaurment.setReadFromDbJdbcSec(tempMeas.getReadFromDbJdbcSec());
+                staticMeasurment = mesaurment;
                 return bikes.getBikes();
             } else {
                 try {
@@ -269,6 +262,7 @@ public class ServerCallImpl implements ServerCall {
             closeSession();
             Main.getSpider().getMain().showLoginView();
         }
+
         return new ArrayList<>();
     }
 
@@ -293,7 +287,6 @@ public class ServerCallImpl implements ServerCall {
             HttpEntity entity = new StringEntity(json);
             requsetPost.setEntity(entity);
             HttpResponse response = client.execute(requsetPost);
-            System.out.println("Code " + response.getStatusLine().getStatusCode());
             String code = response.getStatusLine().getStatusCode() + "";
             if (response.getStatusLine().getStatusCode() == 200) {
                 String returnedJson = EntityUtils.toString(response.getEntity());
@@ -336,7 +329,6 @@ public class ServerCallImpl implements ServerCall {
             HttpEntity entity = new StringEntity(json);
             requsetPost.setEntity(entity);
             HttpResponse response = client.execute(requsetPost);
-            System.out.println("Code " + response.getStatusLine().getStatusCode());
             String code = response.getStatusLine().getStatusCode() + "";
             if (response.getStatusLine().getStatusCode() == 200) {
                 String returnedJson = EntityUtils.toString(response.getEntity());
@@ -366,11 +358,9 @@ public class ServerCallImpl implements ServerCall {
             String token = Main.getSpider().getMain().getMainVI().getCurrentUser().getSessionToken();
             int userID = Main.getSpider().getMain().getMainVI().getCurrentUser().getUserID();
             urlString += "/" + userID + "/" + token + "/" + bikeID;
-            System.out.println(urlString);
             HttpGet requsetGet = new HttpGet(urlString);
             requsetGet.addHeader("remove_bike", USER_AGENT);
             HttpResponse response = client.execute(requsetGet);
-            System.out.println("Code " + response.getStatusLine().getStatusCode());
             String code = response.getStatusLine().getStatusCode() + "";
             if (response.getStatusLine().getStatusCode() == 200) {
                 mess = EntityUtils.toString(response.getEntity());
@@ -410,11 +400,9 @@ public class ServerCallImpl implements ServerCall {
             HttpEntity entity = new StringEntity(json);
             requsetPost.setEntity(entity);
             HttpResponse response = client.execute(requsetPost);
-            System.out.println("Code " + response.getStatusLine().getStatusCode());
             String code = response.getStatusLine().getStatusCode() + "";
             if (response.getStatusLine().getStatusCode() == 200) {
                 String returnedJson = EntityUtils.toString(response.getEntity());
-                System.out.println(returnedJson);
                 Gson gson1 = new Gson();
                 bike = gson1.fromJson(returnedJson, Bike.class);
                 return bike;
@@ -452,12 +440,9 @@ public class ServerCallImpl implements ServerCall {
             HttpEntity entity = new StringEntity(jsonOut);
             requsetPost.setEntity(entity);
             HttpResponse response = client.execute(requsetPost);
-            System.out.println("Code " + response.getStatusLine().getStatusCode());
             String code = response.getStatusLine().getStatusCode() + "";
-            System.out.println(code + " code i return bike ");
             if (response.getStatusLine().getStatusCode() == 200) {
                 String jsonIn = EntityUtils.toString(response.getEntity());
-                System.out.println(jsonIn);
                 isReturnOkID = gson.fromJson(jsonIn, boolean.class);
             } else {
                 ResponceCodeCecker.checkCode(code);
@@ -494,14 +479,19 @@ public class ServerCallImpl implements ServerCall {
             String json = gson.toJson(mvi);
             HttpEntity entity = new StringEntity(json);
             requsetPost.setEntity(entity);
+            long millisStart = Calendar.getInstance().getTimeInMillis();
             HttpResponse response = client.execute(requsetPost);
-            System.out.println("Code " + response.getStatusLine().getStatusCode());
             String code = response.getStatusLine().getStatusCode() + "";
             if (response.getStatusLine().getStatusCode() == 200) {
                 String returnedJson = EntityUtils.toString(response.getEntity());
-                System.out.println(returnedJson);
                 Gson gson1 = new Gson();
                 bike = gson1.fromJson(returnedJson, Bike.class);
+                long millisStop = Calendar.getInstance().getTimeInMillis();
+                PrestandaMeasurement measurement = new PrestandaMeasurement();
+               Long oneBike = new Long(millisStop-millisStart);
+                double oneBikeDouble = oneBike.doubleValue();
+                measurement.setReadOneBike(oneBikeDouble/1000);
+                insertPrestandaMeasurment(measurement, " Mätning av getSingleBIke.");
                 return bike;
             } else {
                 ResponceCodeCecker.checkCode(code);
@@ -536,11 +526,9 @@ public class ServerCallImpl implements ServerCall {
                 HttpEntity entity = new StringEntity(valuePair);
                 requsetPost.setEntity(entity);
                 HttpResponse response = client.execute(requsetPost);
-                System.out.println("Code " + response.getStatusLine().getStatusCode());
                 String code = response.getStatusLine().getStatusCode() + "";
                 if (response.getStatusLine().getStatusCode() == 200) {
                     String json = EntityUtils.toString(response.getEntity());
-                    System.out.println(json);
                     BikeUser user = gson.fromJson(json, BikeUser.class);
                     Main.getSpider().getMain().getMainVI().getCurrentUser().setSessionToken(user.getSessionToken());
                 } else if (code.charAt(0) == '5') {
@@ -583,7 +571,6 @@ public class ServerCallImpl implements ServerCall {
             HttpEntity entity = new StringEntity(jsonObject.toString());
             requsetPost.setEntity(entity);
             HttpResponse response = client.execute(requsetPost);
-            System.out.println("Code " + response.getStatusLine().getStatusCode());
 
             String code = response.getStatusLine().getStatusCode() + "";
             if (response.getStatusLine().getStatusCode() == 200) {
@@ -592,8 +579,6 @@ public class ServerCallImpl implements ServerCall {
                 bikes = gson1.fromJson(returnedJson, Bikes.class);
                 long millisStop = Calendar.getInstance().getTimeInMillis();
                 long sec1 = millisStop - millisStart;
-
-                System.out.println("Tidsåtgång: " + sec1 + " millisekunder" );
                 /*
                 28731st = 521 millisekunder
                  */
@@ -631,7 +616,6 @@ public class ServerCallImpl implements ServerCall {
             HttpEntity entity = new StringEntity(jsonObject.toString());
             requsetPost.setEntity(entity);
             HttpResponse response = client.execute(requsetPost);
-            System.out.println("Code " + response.getStatusLine().getStatusCode());
             String code = response.getStatusLine().getStatusCode() + "";
             if (response.getStatusLine().getStatusCode() == 200) {
                 String returnedJson = EntityUtils.toString(response.getEntity());
@@ -639,7 +623,6 @@ public class ServerCallImpl implements ServerCall {
                 mvi = gson1.fromJson(returnedJson, MainViewInformaiton.class);
                 ArrayList<Bike> usersCurrentBikes = mvi.getCurrentUser().getCurrentBikeLoans();
                 ArrayList<Integer> usersTotalLoan = mvi.getCurrentUser().getTotalBikeLoans();
-                System.out.println("userTotalLoan serverImpl " + usersTotalLoan);
                 int total = mvi.getTotalBikes();
                 int available = mvi.getAvailableBikes();
 
@@ -662,5 +645,46 @@ public class ServerCallImpl implements ServerCall {
         }
         return mvi;
     }
+
+    @Override
+    public void insertPrestandaMeasurment(PrestandaMeasurement prestandaMeasurement, String comment) {
+        String urlString = "http://localhost:8080/text/resources/prestandaMeasurment";
+        Gson gson = new Gson();
+        try {
+            HttpClient client = HttpClientBuilder.create().build();
+            HttpPost requsetPost = new HttpPost(urlString);
+            requsetPost.addHeader("User-Agent123", USER_AGENT);
+            String token = Main.getSpider().getMain().getMainVI().getCurrentUser().getSessionToken();
+            int userID = Main.getSpider().getMain().getMainVI().getCurrentUser().getUserID();
+            BikeUser user = new BikeUser();
+            user.setSessionToken(token);
+            user.setUserID(userID);
+            prestandaMeasurement.setComment("Projekt BikeRentEX: " + comment);
+            user.setMesaurment(prestandaMeasurement);
+            String json = gson.toJson(user);
+            HttpEntity entity = new StringEntity(json);
+            requsetPost.setEntity(entity);
+            HttpResponse response = client.execute(requsetPost);
+            String code = response.getStatusLine().getStatusCode() + "";
+            if (response.getStatusLine().getStatusCode() == 200) {
+                String returnedJson = EntityUtils.toString(response.getEntity());
+            } else {
+                ResponceCodeCecker.checkCode(code);
+                closeSession();
+                Main.getSpider().getMain().showLoginView();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            ErrorView.showError("Serverfel", "Fel hos servern", "Försök igen senare", 0, new Exception(500 + "Fel hos server." + ""));
+            closeSession();
+            Main.getSpider().getMain().showLoginView();
+        }
+    }
+
+    public static PrestandaMeasurement getMesaurment() {
+        return staticMeasurment;
+    }
+
 }
 

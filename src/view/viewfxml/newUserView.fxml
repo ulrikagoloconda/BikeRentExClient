@@ -1,96 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-            minWidth="-Infinity" prefHeight="374.0" prefWidth="358.0" xmlns="http://javafx.com/javafx/8"
-            fx:controller="view.NewUserVewController">
+
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="518.0" prefWidth="399.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.NewUserVewController">
     <children>
-        <AnchorPane fx:id="loginPane" layoutY="-4.0" prefHeight="390.0" prefWidth="374.0">
+        <AnchorPane fx:id="loginPane" layoutX="-2.0" layoutY="-3.0" prefHeight="525.0" prefWidth="403.0">
             <children>
-                <MenuBar layoutX="6.0" layoutY="8.0">
-                    <menus>
-                        <Menu mnemonicParsing="false" text="File">
-                            <items>
-                                <MenuItem mnemonicParsing="false" text="Close"/>
-                            </items>
-                        </Menu>
-                        <Menu mnemonicParsing="false" text="Edit">
-                            <items>
-                                <MenuItem mnemonicParsing="false" text="Delete"/>
-                            </items>
-                        </Menu>
-                        <Menu mnemonicParsing="false" text="Help">
-                            <items>
-                                <MenuItem mnemonicParsing="false" text="About"/>
-                            </items>
-                        </Menu>
-                    </menus>
-                </MenuBar>
-                <PasswordField id="passwordText" fx:id="passwordText" layoutX="28.0" layoutY="247.0"
-                               promptText="Lösenord">
+                <PasswordField id="passwordText" fx:id="passwordText" layoutX="28.0" layoutY="300.0" promptText="Lösenord">
                     <cursor>
-                        <Cursor fx:constant="HAND"/>
+                        <Cursor fx:constant="HAND" />
                     </cursor>
                 </PasswordField>
-                <TextField id="userNameText" fx:id="userNameText" layoutX="28.0" layoutY="99.0">
+                <TextField id="userNameText" fx:id="userNameText" layoutX="28.0" layoutY="100.0">
                     <cursor>
-                        <Cursor fx:constant="HAND"/>
+                        <Cursor fx:constant="HAND" />
                     </cursor>
                 </TextField>
-                <Label layoutX="29.0" layoutY="82.0" text="Användarnamn"/>
-                <Label layoutX="29.0" layoutY="230.0" text="Lösenord"/>
-                <Button layoutX="14.0" layoutY="337.0" mnemonicParsing="false" onAction="#newUserClick"
-                        text="Skapa konto"/>
-                <Label layoutX="65.0" layoutY="52.0" prefHeight="30.0" prefWidth="256.0" text="Registrera ny användare">
+                <Label layoutX="29.0" layoutY="82.0" text="Användarnamn" />
+                <Label layoutX="28.0" layoutY="282.0" text="Lösenord" />
+                <Button layoutX="21.0" layoutY="459.0" mnemonicParsing="false" onAction="#newUserClick" text="Skapa konto" />
+                <Label layoutX="65.0" layoutY="42.0" prefHeight="30.0" prefWidth="256.0" text="Registrera ny användare">
                     <font>
-                        <Font size="20.0"/>
+                        <Font size="20.0" />
                     </font>
                 </Label>
-                <Label layoutX="29.0" layoutY="279.0" prefHeight="17.0" prefWidth="107.0" text="Verifiera lösenord"/>
-                <PasswordField id="passwordCheckTest" fx:id="passwordCheckerText" layoutX="28.0" layoutY="296.0"
-                               promptText="Lösenord">
+                <Label layoutX="26.0" layoutY="332.0" prefHeight="17.0" prefWidth="107.0" text="Verifiera lösenord" />
+                <PasswordField id="passwordCheckTest" fx:id="passwordCheckerText" layoutX="28.0" layoutY="350.0" promptText="Lösenord">
                     <cursor>
-                        <Cursor fx:constant="HAND"/>
+                        <Cursor fx:constant="HAND" />
                     </cursor>
                 </PasswordField>
-                <Label id="uniqeTextIdLabel" layoutX="193.0" layoutY="103.0" text="(Måste vara unikt)"/>
-                <Label layoutX="29.0" layoutY="136.0" text="Förnamn"/>
-                <TextField id="fNameText" fx:id="fNameText" layoutX="28.0" layoutY="153.0">
+                <Label id="uniqeTextIdLabel" layoutX="193.0" layoutY="103.0" text="(Måste vara unikt)" />
+                <Label layoutX="29.0" layoutY="132.0" text="Förnamn" />
+                <TextField id="fNameText" fx:id="fNameText" layoutX="28.0" layoutY="150.0">
                     <cursor>
-                        <Cursor fx:constant="HAND"/>
+                        <Cursor fx:constant="HAND" />
                     </cursor>
                 </TextField>
-                <TextField id="lnameText" fx:id="lNameText" layoutX="193.0" layoutY="153.0">
+                <TextField id="lnameText" fx:id="lNameText" layoutX="193.0" layoutY="150.0">
                     <cursor>
-                        <Cursor fx:constant="HAND"/>
+                        <Cursor fx:constant="HAND" />
                     </cursor>
                 </TextField>
-                <Label layoutX="194.0" layoutY="136.0" text="Efteramn"/>
-                <Label layoutX="194.0" layoutY="178.0" text="Telefonnummer"/>
-                <TextField id="phoneText" fx:id="phoneText" layoutX="193.0" layoutY="195.0">
+                <Label layoutX="194.0" layoutY="132.0" text="Efteramn" />
+                <Label layoutX="194.0" layoutY="182.0" text="Telefonnummer" />
+                <TextField id="phoneText" fx:id="phoneText" layoutX="193.0" layoutY="200.0">
                     <cursor>
-                        <Cursor fx:constant="HAND"/>
+                        <Cursor fx:constant="HAND" />
                     </cursor>
                 </TextField>
-                <TextField id="mailText" fx:id="mailText" layoutX="28.0" layoutY="195.0">
+                <TextField id="mailText" fx:id="mailText" layoutX="28.0" layoutY="250.0">
                     <cursor>
-                        <Cursor fx:constant="HAND"/>
+                        <Cursor fx:constant="HAND" />
                     </cursor>
                 </TextField>
-                <Label layoutX="29.0" layoutY="178.0" text="E-Mail"/>
-                <Label id="uniqeTextIdLabel" fx:id="passwordErrorMatchLabel" layoutX="179.0" layoutY="276.0"
-                       text="Lösenorden matchar inte" textFill="#f00c0c" visible="false"/>
-                <Button layoutX="275.0" layoutY="340.0" mnemonicParsing="false" onAction="#abortClick" text="Återgå"/>
-                <BorderPane prefHeight="41.0" prefWidth="200.0"/>
+                <Label layoutX="28.0" layoutY="232.0" text="E-Mail" />
+                <Label id="uniqeTextIdLabel" fx:id="passwordErrorMatchLabel" layoutX="179.0" layoutY="276.0" text="Lösenorden matchar inte" textFill="#f00c0c" visible="false" />
+                <Button layoutX="285.0" layoutY="459.0" mnemonicParsing="false" onAction="#abortClick" text="Återgå" />
+            <ChoiceBox fx:id="genderBox" layoutX="28.0" layoutY="200.0" prefWidth="150.0" />
+            <Label layoutX="29.0" layoutY="182.0" text="Könstidentitet" />
+            <Label layoutX="194.0" layoutY="232.0" text="Födelseår" />
+            <Pane fx:id="spinnerPane" layoutX="194.0" layoutY="249.0" prefHeight="30.0" prefWidth="170.0" />
 
             </children>
             <cursor>
-                <Cursor fx:constant="OPEN_HAND"/>
+                <Cursor fx:constant="OPEN_HAND" />
             </cursor>
         </AnchorPane>
+      <Pane fx:id="messagePane" prefHeight="207.0" prefWidth="318.0" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="100.0">
+         <children>
+            <Button fx:id="okButton" layoutX="254.0" layoutY="157.0" mnemonicParsing="false" onAction="#showLogin" text="Ok" />
+            <Label fx:id="messageLable" contentDisplay="CENTER" layoutX="13.0" layoutY="34.0" prefHeight="52.0" prefWidth="294.0">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Label>
+            <Label fx:id="messageLable1" contentDisplay="CENTER" layoutX="31.0" layoutY="86.0" prefHeight="36.0" prefWidth="256.0" text="Tryck Ok för att logga in!" textAlignment="CENTER">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
     </children>
 </AnchorPane>
