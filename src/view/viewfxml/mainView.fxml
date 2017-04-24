@@ -81,7 +81,10 @@
                </font>
             </Label>
             <Button fx:id="netBtn" layoutX="492.0" layoutY="298.0" mnemonicParsing="false" onAction="#nextBikesOnList" text="Nästa -&gt;" />
-            <Label fx:id="messageLabel" layoutX="151.0" layoutY="296.0" AnchorPane.leftAnchor="130.0" />
+            <Label fx:id="messageLabel" layoutX="151.0" layoutY="287.0" prefHeight="34.0" prefWidth="332.0" AnchorPane.leftAnchor="130.0">
+               <font>
+                  <Font size="16.0" />
+               </font></Label>
             <ComboBox fx:id="combobox" layoutX="209.0" layoutY="223.0" onAction="#setSearchResult" onInputMethodTextChanged="#popuateComboBox" onKeyPressed="#popuateComboBox" onKeyReleased="#popuateComboBox" prefWidth="150.0" />
             <Label id="memberLevelLabel" fx:id="statLabel" layoutX="511.0" layoutY="257.0" prefHeight="17.0" text="10" />
             <Label id="memberLevelLabel" layoutX="406.0" layoutY="257.0" prefHeight="17.0" text="Tillgängliga cyklar:" />

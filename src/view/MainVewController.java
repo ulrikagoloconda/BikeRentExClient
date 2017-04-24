@@ -62,13 +62,13 @@ public class MainVewController implements Initializable {
     private ArrayList<Bike> availableBikes;
     private List<Bike> currentListInView;
     private PopulateType currentTypeInView;
-    private BikeUser currentUser;
     private MainViewInformaiton mvi;
     private Map<String, Integer> searchMap;
     private Bike selectedBikeSearch;
     private ArrayList<Bike> usersCurrentBikes;
     private ServerCall serverCall;
     private PrestandaMeasurement mesaurment;
+    private boolean isUserInfoPopulated;
 
 
     private String errorTitle = "Fel i huvudfönster";
@@ -78,9 +78,8 @@ public class MainVewController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         serverCall = new ServerCallImpl();
         Main.getSpider().setMainView(this);
-        currentUser = Main.getSpider().getMain().getMvi().getCurrentUser();
-        populateUserTextInGUI(currentUser);
-        if (currentUser.getMemberLevel() != 10) {
+        populateUserTextInGUI(Main.getSpider().getMain().getMvi().getCurrentUser());
+        if (Main.getSpider().getMain().getMvi().getCurrentUser().getMemberLevel() != 10) {
             adminBtn.setVisible(false);
         }
         netBtn.setDisable(true);
@@ -103,13 +102,28 @@ public class MainVewController implements Initializable {
 
     }
 
+    public void restartMainGui(){
+        BikeUser user = Main.getSpider().getMain().getMvi().getCurrentUser();
+        if(user.getMemberLevel() >= 10){
+            adminBtn.setVisible(true);
+        }
+        populateUserTextInGUI(user);
+        cleanGrid();
+        availableBikes.clear();
+    }
+
+    private void cleanGrid() {
+        gridPane.getChildren().clear();
+    }
+
     public void populateUserTextInGUI(BikeUser bikeUser) {
-        ArrayList<Bike> bikesInUse = currentUser.getCurrentBikeLoans();
-        ArrayList<Integer> totalBikes = currentUser.getTotalBikeLoans();
+        ArrayList<Bike> bikesInUse = Main.getSpider().getMain().getMvi().getCurrentUser().getCurrentBikeLoans();
+        ArrayList<Integer> totalBikes = Main.getSpider().getMain().getMvi().getCurrentUser().getTotalBikeLoans();
         userNameLabel.setText(bikeUser.getUserName());
         memberLevelLabel.setText("* " + bikeUser.getMemberLevel() + " *");
         activeLoanLabel.setText("" + bikesInUse.size());
         numberOfLoanedBikesLabel.setText("" + totalBikes.size());
+        setUserInfoPopulated(true);
         setStatLabel();
 
     }
@@ -125,6 +139,7 @@ public class MainVewController implements Initializable {
 
 
     public void searchAvailableBikes(ActionEvent actionEvent) {
+        cleanGrid();
         long millisStart = Calendar.getInstance().getTimeInMillis();
         executeLoanBtn.setDisable(true);
         netBtn.setVisible(false);
@@ -363,7 +378,7 @@ public class MainVewController implements Initializable {
     }
 
     public void showUsersBikes(ActionEvent actionEvent) {
-        usersCurrentBikes = currentUser.getCurrentBikeLoans();
+        usersCurrentBikes = Main.getSpider().getMain().getMvi().getCurrentUser().getCurrentBikeLoans();
 
         if (usersCurrentBikes.size() > 3) {
             currentListInView = usersCurrentBikes.subList(0, 3);
@@ -394,12 +409,21 @@ public class MainVewController implements Initializable {
     }
 
     public void closeSession(ActionEvent actionEvent) {
+        setUserInfoPopulated(false);
         serverCall.closeSession();
         Main.getSpider().getMain().showLoginView();
     }
 
     public PrestandaMeasurement getPrestandaMesaurment(){
         return mesaurment;
+    }
+
+    public boolean isUserInfoPopulated() {
+        return isUserInfoPopulated;
+    }
+
+    public void setUserInfoPopulated(boolean userInfoPopulated) {
+        isUserInfoPopulated = userInfoPopulated;
     }
 }
 

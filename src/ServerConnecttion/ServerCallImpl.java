@@ -30,7 +30,7 @@ public class ServerCallImpl implements ServerCall {
     @Override
     public BikeUser login(String userName, String passw) {
         //start: "try login"
-        BikeUser user = new BikeUser();
+        BikeUser user;
         String urlString = "http://localhost:8080/text/resources";
         HttpClient client = HttpClientBuilder.create().build();
         HttpPost requsetPost = new HttpPost(urlString);
@@ -50,9 +50,7 @@ public class ServerCallImpl implements ServerCall {
             requsetPost.addHeader("User-Agent123", USER_AGENT);
             HttpResponse response = client.execute(requsetPost);
             httpResponseCode = response.getStatusLine().getStatusCode();
-            System.out.println("Code " + httpResponseCode);
             json = EntityUtils.toString(response.getEntity());
-            System.out.println(json);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             errorText = e.toString();
@@ -75,15 +73,13 @@ public class ServerCallImpl implements ServerCall {
         } else {
             Gson gson = new Gson();
             MainViewInformaiton mvi = gson.fromJson(json, MainViewInformaiton.class);
-           // System.out.println("totalloanslient mm:" + mvi.getCurrentUser().getCurrentBikeLoans() + " & " + mvi.getCurrentUser().getTotalBikeLoans() + " phone : " + mvi.getCurrentUser().getPhone() );
-
             if (mvi.getCurrentUser().getUserID() > 0) { //login = OK!!
                 user = mvi.getCurrentUser();
-                System.out.println("user " + user);
                 Main.getSpider().getMain().setMvi(mvi);
-                //TODO kolla detta
-             //  Main.getSpider().getMainView().populateUserTextInGUI(mvi.getCurrentUser());
-
+               if(Main.getSpider().getMainView()!=null){
+                   Main.getSpider().getMainView().populateUserTextInGUI(mvi.getCurrentUser());
+                   Main.getSpider().getMainView().restartMainGui();
+               }
                 return user;
             } else { // wrong password
                 System.out.println("Fel lösenord eller användarnam");

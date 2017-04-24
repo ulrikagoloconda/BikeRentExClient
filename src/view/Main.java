@@ -76,7 +76,6 @@ public class Main extends Application {
     return spider;
   }
   public void showLoginView() {
-    System.out.println("Nu körs showLoginView");
     try {
       primaryStage.setScene(loginScene);
     } catch (Exception e) {
