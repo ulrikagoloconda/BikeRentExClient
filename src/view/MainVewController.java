@@ -3,11 +3,6 @@ package view;
 
 import ServerConnecttion.ServerCall;
 import ServerConnecttion.ServerCallImpl;
-import javafx.scene.Scene;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import model.*;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
@@ -27,6 +22,7 @@ import javafx.scene.text.FontWeight;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -47,7 +43,6 @@ public class MainVewController implements Initializable {
     private GridPane gridPane;
     @FXML
     private ImageView mainImage;
-    ;
     @FXML
     private Label messageLabel;
     @FXML
@@ -108,12 +103,16 @@ public class MainVewController implements Initializable {
             adminBtn.setVisible(true);
         }
         populateUserTextInGUI(user);
-        cleanGrid();
-        availableBikes.clear();
+        cleanMainGui();
+        if(availableBikes!= null) {
+            availableBikes.clear();
+        }
     }
 
-    private void cleanGrid() {
+    public void cleanMainGui() {
         gridPane.getChildren().clear();
+        messageLabel.setText("");
+        combobox.getItems().clear();
     }
 
     public void populateUserTextInGUI(BikeUser bikeUser) {
@@ -139,7 +138,7 @@ public class MainVewController implements Initializable {
 
 
     public void searchAvailableBikes(ActionEvent actionEvent) {
-        cleanGrid();
+        cleanMainGui();
         long millisStart = Calendar.getInstance().getTimeInMillis();
         executeLoanBtn.setDisable(true);
         netBtn.setVisible(false);
@@ -332,7 +331,8 @@ public class MainVewController implements Initializable {
         Bike b = serverCall.getSingleBike(selectedFromGrid);
         if (b.isAvailable()) {
             Bike rentedBike = serverCall.executeBikeLoan(b.getBikeID());
-            messageLabel.setText("Cykeln är lånad till och med " + rentedBike.getDayOfReturn());
+           //messageLabel.setText("Cykeln är lånad till och med " + rentedBike.getDayOfReturn());
+            Main.getSpider().getMain().showPupupInfo("Lån genomfört", "Ditt lån är nu genomomfört och \n den är tillgänglig för dig \n till och med " + rentedBike.getDayOfReturn(), "Ok, Jag fattar!");
             rentedBike.setAvailable(false);
             List<Bike> bikeList = new ArrayList<>();
             bikeList.add(rentedBike);
@@ -341,7 +341,8 @@ public class MainVewController implements Initializable {
             populateUserTextInGUI(Main.getSpider().getMain().getMvi().getCurrentUser());
             setStatLabel();
         } else {
-            messageLabel.setText("Cykeln är tyvärr inte ledig");
+            Main.getSpider().getMain().showPupupInfo("Lån inte genomfört", "Cykeln är tyvärr inte ledig",  "Ok, Jag fattar!");
+            //messageLabel.setText("Cykeln är tyvärr inte ledig");
         }
     }
 
@@ -395,8 +396,9 @@ public class MainVewController implements Initializable {
                 returnedBike = b;
             }
         }
+        LocalDate dayOfReturn = returnedBike.getDayOfReturn();
         boolean result = serverCall.returnBike(Main.getSpider().getMain().getMainVI().getCurrentUser().getUserID(), returnedBike.getBikeID());
-        if (result != true) {
+        if (result == true) {
             serverCall.fetchUpdatedInfo();
             populateUserTextInGUI(Main.getSpider().getMain().getMainVI().getCurrentUser());
             setStatLabel();
@@ -404,6 +406,9 @@ public class MainVewController implements Initializable {
             List<Bike> bike = new ArrayList<>();
             bike.add(returnedBike);
             populateGridPane(PopulateType.RETURNED_BIKE, bike);
+            Main.getSpider().getMain().showPupupInfo("Cykel återlämnad", "Du har nu lämnat tillbaka cykeln. \n Återlämningsdatum: " + dayOfReturn  + " \n Dagens datum: " + LocalDate.now(), "Ok, Jag fattar!");
+        }else {
+            Main.getSpider().getMain().showPupupInfo("Något har gått fel", "Cykeln är inte återlämnad. \n Kontakta kontoret för mer information", "Ok, Jag fattar!");
 
         }
     }

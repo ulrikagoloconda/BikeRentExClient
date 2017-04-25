@@ -17,11 +17,16 @@
                 <Label layoutX="260.0" layoutY="124.0" text="Lösenord" />
                 <Button layoutX="28.0" layoutY="200.0" mnemonicParsing="false" onMouseReleased="#logInClick" text="Logga in" />
                 <Button layoutX="28.0" layoutY="241.0" mnemonicParsing="false" onAction="#newUserClick" text="Skapa konto" />
-                <Label layoutX="123.0" layoutY="52.0" text="Yes, hyr en cykel nu!">
+                <Label layoutX="31.0" layoutY="52.0" prefHeight="30.0" prefWidth="223.0" text="Yes, hyr en cykel nu!">
                     <font>
-                        <Font size="20.0" />
+                        <Font name="System Bold Italic" size="20.0" />
                     </font>
                 </Label>
+            <Label fx:id="infoText" layoutX="129.0" layoutY="314.0" prefHeight="188.0" prefWidth="361.0" text="Label med en massa \n text ">
+               <font>
+                  <Font size="33.0" />
+               </font>
+            </Label>
 
             </children>
         </AnchorPane>

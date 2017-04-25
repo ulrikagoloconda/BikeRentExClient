@@ -5,6 +5,7 @@ import ServerConnecttion.ServerCall;
 import ServerConnecttion.ServerCallImpl;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import javafx.scene.control.Label;
 import model.BikeUser;
 import helpers.Sound;
 import javafx.event.ActionEvent;
@@ -45,6 +46,8 @@ public class LoginVewController implements Initializable {
     private PasswordField passwordText;
     @FXML
     private AnchorPane loginPane;
+    @FXML
+    private Label infoText;
     private BikeUser currentUser;
 
     private ServerCall serverCall;
@@ -53,6 +56,8 @@ public class LoginVewController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         Main.getSpider().setLoginView(this);
         serverCall = new ServerCallImpl();
+        infoText.setWrapText(true);
+        infoText.setText("aösdjkfa  adfasdfsa    afsdasdfsadf  \n adfadfsa \n ");
   }
 
     public void logInClick(Event event) {

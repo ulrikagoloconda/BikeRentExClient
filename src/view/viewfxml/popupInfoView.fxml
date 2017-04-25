@@ -14,6 +14,10 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <TextArea fx:id="infoTextArea" layoutX="34.0" layoutY="90.0" prefHeight="148.0" prefWidth="227.0" text="Iformations" />
+      <Label fx:id="messageLable" layoutX="26.0" layoutY="101.0" prefHeight="26.0" prefWidth="275.0" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="110.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

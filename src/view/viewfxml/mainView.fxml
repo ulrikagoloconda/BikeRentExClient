@@ -6,13 +6,13 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="621.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainVewController">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="651.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainVewController">
    <children>
-       <AnchorPane layoutX="-27.0" prefHeight="621.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+       <AnchorPane layoutY="26.0" prefHeight="651.0" prefWidth="600.0" AnchorPane.bottomAnchor="-26.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="26.0">
            <children>
-            <Label layoutX="202.0" layoutY="10.0" prefHeight="34.0" prefWidth="132.0" text="Bike For Rent! " AnchorPane.rightAnchor="266.0">
+            <Label layoutX="202.0" layoutY="-25.0" prefHeight="45.0" prefWidth="401.0" text="Få hjulen att snurra – utan att bullra" textFill="#49a847" AnchorPane.rightAnchor="165.0">
                <font>
-                  <Font size="18.0" />
+                  <Font name="System Bold Italic" size="21.0" />
                </font>
             </Label>
             <Button layoutX="38.0" layoutY="223.0" mnemonicParsing="false" onAction="#searchAvailableBikes" text="Sök ledig cykel" />
@@ -53,7 +53,7 @@
             </Label>
             <Button layoutX="404.0" layoutY="223.0" mnemonicParsing="false" onAction="#showStatClick" text="Visa statistik" />
             <Button fx:id="adminBtn" layoutX="434.0" layoutY="15.0" mnemonicParsing="false" onAction="#showAdminView" text="Administrera Bike Rent" />
-            <Button fx:id="executeLoanBtn" layoutX="466.0" layoutY="582.0" mnemonicParsing="false" onAction="#executeBikeLoan" text="Låna cykeln" AnchorPane.bottomAnchor="10.0" />
+            <Button fx:id="executeLoanBtn" layoutX="464.0" layoutY="586.0" mnemonicParsing="false" onAction="#executeBikeLoan" text="Låna cykeln" AnchorPane.bottomAnchor="40.0" />
             <GridPane fx:id="gridPane" layoutX="27.0" layoutY="350.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="226.0" prefWidth="541.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
@@ -75,15 +75,10 @@
                   <ImageView fx:id="imageView2" fitHeight="62.0" fitWidth="89.0" layoutX="10.0" layoutY="108.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3" />
                </children>
             </GridPane>
-            <Label layoutX="40.0" layoutY="294.0" text="Cyklar: ">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
             <Button fx:id="netBtn" layoutX="492.0" layoutY="298.0" mnemonicParsing="false" onAction="#nextBikesOnList" text="Nästa -&gt;" />
-            <Label fx:id="messageLabel" layoutX="151.0" layoutY="287.0" prefHeight="34.0" prefWidth="332.0" AnchorPane.leftAnchor="130.0">
+            <Label fx:id="messageLabel" layoutX="37.0" layoutY="287.0" prefHeight="34.0" prefWidth="446.0" AnchorPane.leftAnchor="37.0">
                <font>
-                  <Font size="16.0" />
+                  <Font size="14.0" />
                </font></Label>
             <ComboBox fx:id="combobox" layoutX="209.0" layoutY="223.0" onAction="#setSearchResult" onInputMethodTextChanged="#popuateComboBox" onKeyPressed="#popuateComboBox" onKeyReleased="#popuateComboBox" prefWidth="150.0" />
             <Label id="memberLevelLabel" fx:id="statLabel" layoutX="511.0" layoutY="257.0" prefHeight="17.0" text="10" />

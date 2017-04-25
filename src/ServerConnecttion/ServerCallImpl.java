@@ -421,7 +421,7 @@ public class ServerCallImpl implements ServerCall {
         Gson gson = new Gson();
         Bikes bikes = null;
         String url = "http://localhost:8080/text/resources/returnBike";
-        boolean isReturnOkID = false;
+        boolean isReturnOk = false;
         BikeUser user = new BikeUser();
         user.setSessionToken(Main.getSpider().getMain().getMvi().getCurrentUser().getSessionToken());
         user.setUserID(userID);
@@ -439,7 +439,8 @@ public class ServerCallImpl implements ServerCall {
             String code = response.getStatusLine().getStatusCode() + "";
             if (response.getStatusLine().getStatusCode() == 200) {
                 String jsonIn = EntityUtils.toString(response.getEntity());
-                isReturnOkID = gson.fromJson(jsonIn, boolean.class);
+                isReturnOk = gson.fromJson(jsonIn, boolean.class);
+                System.out.println("I servercall is Return ok " + isReturnOk);
             } else {
                 ResponceCodeCecker.checkCode(code);
                 closeSession();
@@ -452,7 +453,7 @@ public class ServerCallImpl implements ServerCall {
             Main.getSpider().getMain().showLoginView();
             return false;
         }
-        return isReturnOkID;
+        return isReturnOk;
     }
 
     @Override
@@ -482,6 +483,7 @@ public class ServerCallImpl implements ServerCall {
                 String returnedJson = EntityUtils.toString(response.getEntity());
                 Gson gson1 = new Gson();
                 bike = gson1.fromJson(returnedJson, Bike.class);
+                System.out.println("I servercall get gingle bike " + bike.isAvailable());
                 long millisStop = Calendar.getInstance().getTimeInMillis();
                 PrestandaMeasurement measurement = new PrestandaMeasurement();
                Long oneBike = new Long(millisStop-millisStart);

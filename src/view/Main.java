@@ -202,7 +202,7 @@ public class Main extends Application {
       Parent popupRoot = popupInfoLoader.load();
       Scene dialogScene = new Scene(popupRoot);
       dialog.setScene(dialogScene);
-      Main.getSpider().getPopupInfoController().setMessage(headLine,message,buttonMessage);
+      Main.getSpider().getPopupInfoController().setMessage(headLine,message, buttonMessage);
       dialog.show();
 
 

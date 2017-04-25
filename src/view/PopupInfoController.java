@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -17,25 +18,31 @@ public class PopupInfoController implements Initializable{
     @FXML
     private TextArea infoTextArea;
     @FXML
-    private Label headLine;
+    private Label headLine, messageLable;
     @FXML
     private Button okButton;
+    @FXML
+
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Main.getSpider().setPopupInfoController(this);
-        infoTextArea.setEditable(false);
     }
 
 
     public void userOk(ActionEvent actionEvent) {
         Main.getSpider().getMain().closePopup();
+        Main.getSpider().getMainView().cleanMainGui();
+        messageLable.setWrapText(true);
+
     }
 
-    public void setMessage(String headLineText, String message, String buttonText){
+    public void setMessage(String headLineText, String message1, String buttonText){
         headLine.setText(headLineText);
-        infoTextArea.setText(message);
+        if(message1 != null){
+            messageLable.setText(message1);
+        }
         okButton.setText(buttonText);
     }
 }
