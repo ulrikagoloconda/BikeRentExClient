@@ -9,22 +9,27 @@
 
 <AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="621.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.LoginVewController">
     <children>
-        <AnchorPane fx:id="loginPane" layoutY="-4.0" prefHeight="628.0" prefWidth="600.0">
+        <AnchorPane fx:id="loginPane" layoutY="-5.0" prefHeight="628.0" prefWidth="600.0">
             <children>
-                <PasswordField fx:id="passwordText" layoutX="260.0" layoutY="153.0" promptText="Lösenord" />
-                <TextField fx:id="userNameText" layoutX="28.0" layoutY="153.0" />
-                <Label layoutX="29.0" layoutY="124.0" text="Användarnamn" />
-                <Label layoutX="260.0" layoutY="124.0" text="Lösenord" />
-                <Button layoutX="28.0" layoutY="200.0" mnemonicParsing="false" onMouseReleased="#logInClick" text="Logga in" />
-                <Button layoutX="28.0" layoutY="241.0" mnemonicParsing="false" onAction="#newUserClick" text="Skapa konto" />
-                <Label layoutX="31.0" layoutY="52.0" prefHeight="30.0" prefWidth="223.0" text="Yes, hyr en cykel nu!">
+                <PasswordField fx:id="passwordText" layoutX="260.0" layoutY="399.0" promptText="Lösenord" AnchorPane.topAnchor="396.0" />
+                <TextField fx:id="userNameText" layoutX="28.0" layoutY="396.0" AnchorPane.leftAnchor="28.0" AnchorPane.topAnchor="396.0" />
+                <Label layoutX="29.0" layoutY="362.0" text="Användarnamn" AnchorPane.leftAnchor="28.0" AnchorPane.topAnchor="362.0" />
+                <Label layoutX="260.0" layoutY="361.0" text="Lösenord" AnchorPane.topAnchor="362.0" />
+                <Button layoutX="28.0" layoutY="433.0" mnemonicParsing="false" onMouseReleased="#logInClick" text="Logga in" AnchorPane.leftAnchor="28.0" />
+                <Button layoutX="28.0" layoutY="551.0" mnemonicParsing="false" onAction="#newUserClick" text="Skapa konto" AnchorPane.leftAnchor="28.0" />
+                <Label layoutX="129.0" layoutY="57.0" prefHeight="35.0" prefWidth="289.0" text="Yes, hyr en cykel nu!" textAlignment="CENTER" textFill="#49a847" AnchorPane.leftAnchor="93.0">
                     <font>
-                        <Font name="System Bold Italic" size="20.0" />
+                        <Font name="System Bold Italic" size="24.0" />
                     </font>
                 </Label>
-            <Label fx:id="infoText" layoutX="129.0" layoutY="314.0" prefHeight="188.0" prefWidth="361.0" text="Label med en massa \n text ">
+            <Label fx:id="infoText" layoutX="93.0" layoutY="98.0" prefHeight="193.0" prefWidth="361.0" text=" df" textFill="#49a847" AnchorPane.leftAnchor="93.0" AnchorPane.topAnchor="98.0">
                <font>
-                  <Font size="33.0" />
+                  <Font name="Arial Italic" size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="28.0" layoutY="511.0" text="Vill du bli medlem? " textFill="#49a847" AnchorPane.leftAnchor="28.0">
+               <font>
+                  <Font size="18.0" />
                </font>
             </Label>
 

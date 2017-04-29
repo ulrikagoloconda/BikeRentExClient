@@ -93,7 +93,8 @@ public class MainVewController implements Initializable {
         currentListInView = new ArrayList<>();
         serverCall = new ServerCallImpl();
         Image image = new Image("img/bike.png");
-        mainImage.setImage(image);
+
+        messageLabel.setWrapText(true);
 
     }
 
@@ -275,7 +276,7 @@ public class MainVewController implements Initializable {
             for (Bike b : usersCurrentBikes) {
                 if (b.getBikeID() == selectedFromGrid) {
                     String s = "Årsmodell: " + b.getModelYear() + " Färg: " + b.getColor() + " Cykeltyp: " +
-                            b.getType() + " Återlämningsdag: " + b.getDayOfReturn();
+                            b.getType() + " \nÅterlämningsdag: " + b.getDayOfReturn();
                     messageLabel.setText(s);
                     returnBtn.setVisible(true);
                 }

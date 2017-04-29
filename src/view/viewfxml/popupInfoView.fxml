@@ -14,7 +14,7 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Label fx:id="messageLable" layoutX="26.0" layoutY="101.0" prefHeight="26.0" prefWidth="275.0" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="110.0">
+      <Label fx:id="messageLable" layoutX="26.0" layoutY="101.0" prefHeight="151.0" prefWidth="275.0" textAlignment="CENTER" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="110.0">
          <font>
             <Font size="14.0" />
          </font>

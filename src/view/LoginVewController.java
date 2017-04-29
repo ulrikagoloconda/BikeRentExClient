@@ -57,7 +57,8 @@ public class LoginVewController implements Initializable {
         Main.getSpider().setLoginView(this);
         serverCall = new ServerCallImpl();
         infoText.setWrapText(true);
-        infoText.setText("aösdjkfa  adfasdfsa    afsdasdfsadf  \n adfadfsa \n ");
+        infoText.setText(" Lovar du att cykla till jobbet? \n \n I så fall lovar vi att låna ut en cykel! \n \n" +
+                "Vi på Grön Särling vill nämligen \n få hjulen att snurra - utan att bullra \n ");
   }
 
     public void logInClick(Event event) {

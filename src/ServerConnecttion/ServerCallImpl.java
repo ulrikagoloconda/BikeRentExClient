@@ -76,6 +76,7 @@ public class ServerCallImpl implements ServerCall {
             if (mvi.getCurrentUser().getUserID() > 0) { //login = OK!!
                 user = mvi.getCurrentUser();
                 Main.getSpider().getMain().setMvi(mvi);
+                //TODO börja här, kolla när användarens cyklar sätts, datum är null
                if(Main.getSpider().getMainView()!=null){
                    Main.getSpider().getMainView().populateUserTextInGUI(mvi.getCurrentUser());
                    Main.getSpider().getMainView().restartMainGui();
@@ -483,7 +484,7 @@ public class ServerCallImpl implements ServerCall {
                 String returnedJson = EntityUtils.toString(response.getEntity());
                 Gson gson1 = new Gson();
                 bike = gson1.fromJson(returnedJson, Bike.class);
-                System.out.println("I servercall get gingle bike " + bike.isAvailable());
+                System.out.println("I servercall get gingle bike " + bike.isAvailable() + " " + bike.getImageStream());
                 long millisStop = Calendar.getInstance().getTimeInMillis();
                 PrestandaMeasurement measurement = new PrestandaMeasurement();
                Long oneBike = new Long(millisStop-millisStart);

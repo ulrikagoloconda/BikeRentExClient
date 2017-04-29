@@ -152,7 +152,9 @@ public class Bike{
   }
 
   public ByteArrayInputStream getImageStream() {
-      imageStream.reset();
+      if (imageStream != null) {
+          imageStream.reset();
+      }
     return imageStream;
   }
 
