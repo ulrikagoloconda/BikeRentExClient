@@ -65,7 +65,6 @@ public class ServerCallImpl implements ServerCall {
             httpResponseCode = 3;
         }
         if (httpResponseCode != 200) { //error in request or connection
-            System.out.println("Fel på path eller server..");
             System.out.println(errorText);
             ErrorView.showError("Inloggningsfel-serverCall", "fel vid inloggning", "Fail", 0, new Exception("httpResponseCode" + httpResponseCode + errorText));
             Main.getSpider().getMain().showLoginView();
@@ -441,7 +440,6 @@ public class ServerCallImpl implements ServerCall {
             if (response.getStatusLine().getStatusCode() == 200) {
                 String jsonIn = EntityUtils.toString(response.getEntity());
                 isReturnOk = gson.fromJson(jsonIn, boolean.class);
-                System.out.println("I servercall is Return ok " + isReturnOk);
             } else {
                 ResponceCodeCecker.checkCode(code);
                 closeSession();
@@ -484,7 +482,6 @@ public class ServerCallImpl implements ServerCall {
                 String returnedJson = EntityUtils.toString(response.getEntity());
                 Gson gson1 = new Gson();
                 bike = gson1.fromJson(returnedJson, Bike.class);
-                System.out.println("I servercall get gingle bike " + bike.isAvailable() + " " + bike.getImageStream());
                 long millisStop = Calendar.getInstance().getTimeInMillis();
                 PrestandaMeasurement measurement = new PrestandaMeasurement();
                Long oneBike = new Long(millisStop-millisStart);

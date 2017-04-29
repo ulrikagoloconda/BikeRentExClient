@@ -93,7 +93,7 @@ public class MainVewController implements Initializable {
         currentListInView = new ArrayList<>();
         serverCall = new ServerCallImpl();
         Image image = new Image("img/bike.png");
-
+        mainImage.setImage(image);
         messageLabel.setWrapText(true);
 
     }
@@ -333,10 +333,13 @@ public class MainVewController implements Initializable {
         if (b.isAvailable()) {
             Bike rentedBike = serverCall.executeBikeLoan(b.getBikeID());
            //messageLabel.setText("Cykeln är lånad till och med " + rentedBike.getDayOfReturn());
+            System.out.println("Är det detta som tar sån tid, innan i execute " + rentedBike.getImageStream());
             Main.getSpider().getMain().showPupupInfo("Lån genomfört", "Ditt lån är nu genomomfört och \n den är tillgänglig för dig \n till och med " + rentedBike.getDayOfReturn(), "Ok, Jag fattar!");
+            System.out.println("Är det detta som tar sån tid, innan i execute ");
             rentedBike.setAvailable(false);
             List<Bike> bikeList = new ArrayList<>();
             bikeList.add(rentedBike);
+
             populateGridPane(PopulateType.RENTED_BIKE, bikeList);
             serverCall.fetchUpdatedInfo();
             populateUserTextInGUI(Main.getSpider().getMain().getMvi().getCurrentUser());
@@ -420,6 +423,9 @@ public class MainVewController implements Initializable {
         Main.getSpider().getMain().showLoginView();
     }
 
+    public void searchAvailableBikesThred(){
+
+    }
     public PrestandaMeasurement getPrestandaMesaurment(){
         return mesaurment;
     }
