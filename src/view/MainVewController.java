@@ -3,6 +3,7 @@ package view;
 
 import ServerConnecttion.ServerCall;
 import ServerConnecttion.ServerCallImpl;
+import javafx.application.Platform;
 import model.*;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
@@ -32,7 +33,7 @@ import java.util.*;
  */
 
 //Klass som fungerar som controller till mainView. Här finns metoder som motsvarar funktionaliteten i programmets huvudfönster.
-public class MainVewController implements Initializable {
+public class MainVewController implements Initializable, Observer{
     @FXML
     private TableColumn columCykel;
     @FXML
@@ -114,6 +115,7 @@ public class MainVewController implements Initializable {
         gridPane.getChildren().clear();
         messageLabel.setText("");
         combobox.getItems().clear();
+        currentListInView.clear();
     }
 
     public void populateUserTextInGUI(BikeUser bikeUser) {
@@ -423,9 +425,7 @@ public class MainVewController implements Initializable {
         Main.getSpider().getMain().showLoginView();
     }
 
-    public void searchAvailableBikesThred(){
 
-    }
     public PrestandaMeasurement getPrestandaMesaurment(){
         return mesaurment;
     }
@@ -436,6 +436,28 @@ public class MainVewController implements Initializable {
 
     public void setUserInfoPopulated(boolean userInfoPopulated) {
         isUserInfoPopulated = userInfoPopulated;
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        System.out.println("Kär körs update i mainView ");
+        BikeReader bikeReader = (BikeReader)o;
+        Set<Bike> bikeSet = bikeReader.getBikeSet();
+        availableBikes.addAll(bikeSet);
+        if(currentListInView.size() == 0) {
+            populateGridPane(PopulateType.AVAILABLE_BIKES,availableBikes);
+        }
+    }
+
+    public void searchAvailableBikesThread(ActionEvent actionEvent) {
+        BikeReader bikeReader = new BikeReader();
+        Thread readBikeThred = new Thread(bikeReader);
+
+        Platform.runLater(bikeReader);
+
+
+
+       // readBikeThred.start();
     }
 }
 

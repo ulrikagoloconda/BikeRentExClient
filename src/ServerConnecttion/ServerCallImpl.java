@@ -678,6 +678,50 @@ public class ServerCallImpl implements ServerCall {
         }
     }
 
+    @Override
+    public Bikes getNextTenAvailableBikes(int i) {
+        String urlString = "http://localhost:8080/text/resources/nextTenAvailableBikes";
+        Gson gson = new Gson();
+        Bikes returnBikes = null;
+        try {
+            HttpClient client = HttpClientBuilder.create().build();
+            HttpPost requsetPost = new HttpPost(urlString);
+            requsetPost.addHeader("User-Agent", USER_AGENT);
+            String token = Main.getSpider().getMain().getMainVI().getCurrentUser().getSessionToken();
+            int userID = Main.getSpider().getMain().getMainVI().getCurrentUser().getUserID();
+            BikeUser user = new BikeUser();
+            user.setSessionToken(token);
+            user.setUserID(userID);
+            MainViewInformaiton mvi = new MainViewInformaiton();
+            mvi.setCurrentUser(user);
+            Bikes bikes = new Bikes();
+            bikes.setTenNextfromInt(i);
+            mvi.setBikes(bikes);
+            String json = gson.toJson(mvi);
+            HttpEntity entity = new StringEntity(json);
+            requsetPost.setEntity(entity);
+            HttpResponse response = client.execute(requsetPost);
+            String code = response.getStatusLine().getStatusCode() + "";
+            if (response.getStatusLine().getStatusCode() == 200) {
+                String returnedJson = EntityUtils.toString(response.getEntity());
+                Gson gson1 = new Gson();
+                 returnBikes = gson1.fromJson(returnedJson,Bikes.class);
+                return returnBikes;
+            } else {
+                ResponceCodeCecker.checkCode(code);
+                closeSession();
+                Main.getSpider().getMain().showLoginView();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            ErrorView.showError("Serverfel", "Fel hos servern", "Försök igen senare", 0, new Exception(500 + "Fel hos server." + ""));
+            closeSession();
+            Main.getSpider().getMain().showLoginView();
+        }
+        return returnBikes;
+    }
+
     public static PrestandaMeasurement getMesaurment() {
         return staticMeasurment;
     }

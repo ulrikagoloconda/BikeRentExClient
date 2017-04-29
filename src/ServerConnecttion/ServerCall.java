@@ -1,9 +1,6 @@
 package ServerConnecttion;
 
-import model.Bike;
-import model.BikeUser;
-import model.MainViewInformaiton;
-import model.PrestandaMeasurement;
+import model.*;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -56,4 +53,5 @@ public interface ServerCall {
 
     void insertPrestandaMeasurment(PrestandaMeasurement prestandaMeasurement, String comment);
 
+    Bikes getNextTenAvailableBikes(int i);
 }

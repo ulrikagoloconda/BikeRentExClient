@@ -15,7 +15,7 @@
                   <Font name="System Bold Italic" size="21.0" />
                </font>
             </Label>
-            <Button layoutX="38.0" layoutY="223.0" mnemonicParsing="false" onAction="#searchAvailableBikes" text="Sök ledig cykel" />
+            <Button layoutX="38.0" layoutY="223.0" mnemonicParsing="false" onAction="#searchAvailableBikesThread" text="Sök ledig cykel" />
             <Label layoutX="40.0" layoutY="182.0" text="Vilka cyklar är lediga?">
                <font>
                   <Font size="16.0" />

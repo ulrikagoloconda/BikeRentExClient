@@ -12,6 +12,8 @@ public class Bikes {
     ArrayList<Bike> bikes;
     private Map<String,Integer> searchResults;
     private PrestandaMeasurement prestandaMeasurement;
+    private Integer tenNextfromInt;
+    private boolean isAllAvailableBikesSent;
 
 
 
@@ -42,5 +44,21 @@ public class Bikes {
 
     public void setPrestandaMeasurement(PrestandaMeasurement prestandaMeasurement) {
         this.prestandaMeasurement = prestandaMeasurement;
+    }
+
+    public Integer getTenNextfromInt() {
+        return tenNextfromInt;
+    }
+
+    public void setTenNextfromInt(Integer tenNextfromInt) {
+        this.tenNextfromInt = tenNextfromInt;
+    }
+
+    public boolean isAllAvailableBikesSent() {
+        return isAllAvailableBikesSent;
+    }
+
+    public void setAllAvailableBikesSent(boolean allAvailableBikesSent) {
+        isAllAvailableBikesSent = allAvailableBikesSent;
     }
 }
