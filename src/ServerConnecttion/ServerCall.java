@@ -53,5 +53,5 @@ public interface ServerCall {
 
     void insertPrestandaMeasurment(PrestandaMeasurement prestandaMeasurement, String comment);
 
-    Bikes getNextTenAvailableBikes(int i);
+    Bikes getNextTenAvailableBikes(int i, int numberOfBikesRead);
 }

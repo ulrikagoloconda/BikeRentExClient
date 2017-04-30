@@ -12,6 +12,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import model.BikeReader;
 import model.BikeUser;
 import model.MainViewInformaiton;
 
@@ -40,12 +41,15 @@ public class Main extends Application {
   private BikeUser user;
   private MainViewInformaiton mvi;
   private ServerCall serverCall ;
+  private static BikeReader bikeReader;
 
   public Main() {
+
   }
 
   @Override
   public void start(Stage primaryStage) throws Exception {
+    System.out.println(Thread.currentThread().getId() + " trådid i start ");
     spider = new SpiderView();
     spider.setMain(this);
     serverCall = new ServerCallImpl();

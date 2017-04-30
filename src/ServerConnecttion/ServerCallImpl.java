@@ -679,7 +679,7 @@ public class ServerCallImpl implements ServerCall {
     }
 
     @Override
-    public Bikes getNextTenAvailableBikes(int i) {
+    public Bikes getNextTenAvailableBikes(int i, int numberOfBikesRead) {
         String urlString = "http://localhost:8080/text/resources/nextTenAvailableBikes";
         Gson gson = new Gson();
         Bikes returnBikes = null;
@@ -695,6 +695,7 @@ public class ServerCallImpl implements ServerCall {
             MainViewInformaiton mvi = new MainViewInformaiton();
             mvi.setCurrentUser(user);
             Bikes bikes = new Bikes();
+            bikes.setNumberOfBikesRead(numberOfBikesRead);
             bikes.setTenNextfromInt(i);
             mvi.setBikes(bikes);
             String json = gson.toJson(mvi);
@@ -702,6 +703,7 @@ public class ServerCallImpl implements ServerCall {
             requsetPost.setEntity(entity);
             HttpResponse response = client.execute(requsetPost);
             String code = response.getStatusLine().getStatusCode() + "";
+            System.out.println();
             if (response.getStatusLine().getStatusCode() == 200) {
                 String returnedJson = EntityUtils.toString(response.getEntity());
                 Gson gson1 = new Gson();

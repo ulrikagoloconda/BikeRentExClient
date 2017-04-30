@@ -1,25 +1,24 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Map;
+
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
  * Created by Goloconda on 2016-12-02.
  */
 public class Bikes {
-    //Lite tillfällig klass, vi kan behöva bygga ut denna för att anpassa till det vi behöver
-    ArrayList<Bike> bikes;
+
+    private ArrayList<Bike> bikes;
     private Map<String,Integer> searchResults;
-    private PrestandaMeasurement prestandaMeasurement;
     private Integer tenNextfromInt;
-    private boolean isAllAvailableBikesSent;
-
-
-
+    private Integer lasID;
+    private Integer numberOfBikesRead;
+    private PrestandaMeasurement prestandaMeasurement;
     public Bikes(){
         bikes = new ArrayList<>();
-        searchResults = new HashMap<>();
     }
 
     public ArrayList<Bike> getBikes() {
@@ -54,11 +53,19 @@ public class Bikes {
         this.tenNextfromInt = tenNextfromInt;
     }
 
-    public boolean isAllAvailableBikesSent() {
-        return isAllAvailableBikesSent;
+    public Integer getLasID() {
+        return lasID;
     }
 
-    public void setAllAvailableBikesSent(boolean allAvailableBikesSent) {
-        isAllAvailableBikesSent = allAvailableBikesSent;
+    public void setLasID(Integer lasID) {
+        this.lasID = lasID;
+    }
+
+    public Integer getNumberOfBikesRead() {
+        return numberOfBikesRead;
+    }
+
+    public void setNumberOfBikesRead(Integer numberOfBikesRead) {
+        this.numberOfBikesRead = numberOfBikesRead;
     }
 }

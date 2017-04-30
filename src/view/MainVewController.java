@@ -4,6 +4,10 @@ package view;
 import ServerConnecttion.ServerCall;
 import ServerConnecttion.ServerCallImpl;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import model.*;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
@@ -33,7 +37,7 @@ import java.util.*;
  */
 
 //Klass som fungerar som controller till mainView. Här finns metoder som motsvarar funktionaliteten i programmets huvudfönster.
-public class MainVewController implements Initializable, Observer{
+public class MainVewController implements Initializable{
     @FXML
     private TableColumn columCykel;
     @FXML
@@ -65,6 +69,10 @@ public class MainVewController implements Initializable, Observer{
     private ServerCall serverCall;
     private PrestandaMeasurement mesaurment;
     private boolean isUserInfoPopulated;
+    private  BikeReader bikeReader;
+    ObservableList<Node> obserableGrid;
+    ObservableList<Bike> obserableBikeList;
+
 
 
     private String errorTitle = "Fel i huvudfönster";
@@ -96,7 +104,7 @@ public class MainVewController implements Initializable, Observer{
         Image image = new Image("img/bike.png");
         mainImage.setImage(image);
         messageLabel.setWrapText(true);
-
+        obserableGrid = gridPane.getChildren();
     }
 
     public void restartMainGui(){
@@ -335,9 +343,7 @@ public class MainVewController implements Initializable, Observer{
         if (b.isAvailable()) {
             Bike rentedBike = serverCall.executeBikeLoan(b.getBikeID());
            //messageLabel.setText("Cykeln är lånad till och med " + rentedBike.getDayOfReturn());
-            System.out.println("Är det detta som tar sån tid, innan i execute " + rentedBike.getImageStream());
             Main.getSpider().getMain().showPupupInfo("Lån genomfört", "Ditt lån är nu genomomfört och \n den är tillgänglig för dig \n till och med " + rentedBike.getDayOfReturn(), "Ok, Jag fattar!");
-            System.out.println("Är det detta som tar sån tid, innan i execute ");
             rentedBike.setAvailable(false);
             List<Bike> bikeList = new ArrayList<>();
             bikeList.add(rentedBike);
@@ -348,7 +354,6 @@ public class MainVewController implements Initializable, Observer{
             setStatLabel();
         } else {
             Main.getSpider().getMain().showPupupInfo("Lån inte genomfört", "Cykeln är tyvärr inte ledig",  "Ok, Jag fattar!");
-            //messageLabel.setText("Cykeln är tyvärr inte ledig");
         }
     }
 
@@ -438,26 +443,72 @@ public class MainVewController implements Initializable, Observer{
         isUserInfoPopulated = userInfoPopulated;
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
-        System.out.println("Kär körs update i mainView ");
-        BikeReader bikeReader = (BikeReader)o;
-        Set<Bike> bikeSet = bikeReader.getBikeSet();
-        availableBikes.addAll(bikeSet);
-        if(currentListInView.size() == 0) {
-            populateGridPane(PopulateType.AVAILABLE_BIKES,availableBikes);
+
+    public void searchAvailableBikesThread(ActionEvent actionEvent) {
+        bikeReader = new BikeReader();
+        bikeReader.setNumberOfBikesToRead(4);
+        messageLabel.textProperty().bind(bikeReader.messageProperty());
+        ObservableList<Bike> bikesTest = (ObservableList<Bike>)  bikeReader.valueProperty().getValue();
+        obserableBikeList = FXCollections.<Bike>observableArrayList();
+
+        Thread bikeGrabberThread = new Thread(bikeReader);
+        bikeGrabberThread.setDaemon(true);
+        bikeGrabberThread.start();
+        ((ObservableList<Bike>) bikeReader.valueProperty().getValue()).addListener(new ListChangeListener() {
+            @Override
+            public void onChanged(Change c) {
+                System.out.println("I on changed ");
+                ArrayList<Bike> bikeList = new ArrayList<>();
+
+                populateGridPane(PopulateType.AVAILABLE_BIKES,bikeList);
+            }
+        });
+
+        for(int i = 0; i <10; i++) {
+            System.out.println(((ObservableList<Bike>) bikeReader.valueProperty().getValue()).size() + " efter start ");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    public void searchAvailableBikesThread(ActionEvent actionEvent) {
-        BikeReader bikeReader = new BikeReader();
-        Thread readBikeThred = new Thread(bikeReader);
 
-        Platform.runLater(bikeReader);
+    public void updateMainGui() {
+        System.out.println("Kär körs update i mainView " + Thread.currentThread().getId());
+        System.out.println(java.lang.Thread.activeCount() + " antalet trådar ");
 
+        availableBikes = new ArrayList<>();
+        availableBikes.addAll(bikeReader.getBikeSet());
+        if (availableBikes.size() > 3) {
+            currentListInView = availableBikes.subList(0, 3);
+            populateGridPane(PopulateType.AVAILABLE_BIKES, currentListInView);
+        }
+    }
 
+    public Label getMessageLabel() {
+        return messageLabel;
+    }
 
-       // readBikeThred.start();
+    public void setMessageLabel(Label messageLabel) {
+        this.messageLabel = messageLabel;
+    }
+
+    public ObservableList<Node> getObserableGrid() {
+        return obserableGrid;
+    }
+
+    public void setObserableGrid(ObservableList<Node> obserableGrid) {
+        this.obserableGrid = obserableGrid;
+    }
+
+    public ObservableList<Bike> getObserableBikeList() {
+        return obserableBikeList;
+    }
+
+    public void setObserableBikeList(ObservableList<Bike> obserableBikeList) {
+        this.obserableBikeList = obserableBikeList;
     }
 }
 
