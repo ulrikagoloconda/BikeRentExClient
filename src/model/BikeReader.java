@@ -22,6 +22,7 @@ public class BikeReader extends Task {
     private Bikes bikesObject;
     private int numberOfBikesToRead;
     private ObservableList<Bike> obserableList;
+    private boolean isStillFetching;
 
 
     public BikeReader() {
@@ -32,6 +33,7 @@ public class BikeReader extends Task {
         bikeSet = new HashSet<>();
         obserableList = FXCollections.<Bike>observableArrayList();
         updateValue(obserableList);
+        isStillFetching = true;
     }
 
     public  Set<Bike> getBikeSet() {
@@ -53,9 +55,8 @@ public class BikeReader extends Task {
 
     @Override
     protected Object call() throws Exception {
-        System.out.println("Trådid i run " + Thread.currentThread().getId());
-        boolean check = false;
-        while (!check) {
+
+        while (isStillFetching) {
             if (bikesObject == null) {
                 bikesObject = serverCall.getNextTenAvailableBikes(0, numberOfBikesToRead);
                 bikeSet.addAll(bikesObject.getBikes());
@@ -65,11 +66,12 @@ public class BikeReader extends Task {
                 bikesObject = serverCall.getNextTenAvailableBikes(bikesObject.getTenNextfromInt(), numberOfBikesToRead);
                 bikeSet.addAll(bikesObject.getBikes());
                 if (bikesObject.getBikes().size() < numberOfBikesToRead) {
-                    check = true;
+                    isStillFetching = false;
+                    Main.getSpider().getMainView().setMilliStop();
                 }
             }
             Thread.sleep(100);
-            updateMessage(obserableList.size() + " längden på listan");
+            updateMessage((obserableList.size()/3)+"");
             updateGui();
         }
         return null;
@@ -87,5 +89,13 @@ public class BikeReader extends Task {
 
     public void setObserableList(ObservableList<Bike> obserableList) {
         this.obserableList = obserableList;
+    }
+
+    public boolean isStillFetching() {
+        return isStillFetching;
+    }
+
+    public void setStillFetching(boolean stillFetching) {
+        isStillFetching = stillFetching;
     }
 }

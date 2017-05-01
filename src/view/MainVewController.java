@@ -49,7 +49,7 @@ public class MainVewController implements Initializable{
     @FXML
     private ImageView mainImage;
     @FXML
-    private Label messageLabel;
+    private Label messageLabel, counter, counter1;
     @FXML
     private Button executeLoanBtn, netBtn, adminBtn, returnBtn;
     @FXML
@@ -70,8 +70,14 @@ public class MainVewController implements Initializable{
     private PrestandaMeasurement mesaurment;
     private boolean isUserInfoPopulated;
     private  BikeReader bikeReader;
-    ObservableList<Node> obserableGrid;
-    ObservableList<Bike> obserableBikeList;
+   private ObservableList<Node> obserableGrid;
+    private ObservableList<Bike> obserableBikeList;
+    private int slideNumber;
+    //Mätning av prestanda
+    private  long millisStop;
+    private long milliStopFinnish;
+   private long millisStart;
+
 
 
 
@@ -105,6 +111,7 @@ public class MainVewController implements Initializable{
         mainImage.setImage(image);
         messageLabel.setWrapText(true);
         obserableGrid = gridPane.getChildren();
+        slideNumber = 0;
     }
 
     public void restartMainGui(){
@@ -124,6 +131,7 @@ public class MainVewController implements Initializable{
         messageLabel.setText("");
         combobox.getItems().clear();
         currentListInView.clear();
+        netBtn.setDisable(true);
     }
 
     public void populateUserTextInGUI(BikeUser bikeUser) {
@@ -177,10 +185,12 @@ public class MainVewController implements Initializable{
     //I och m ed att event är kopplade till de olika användningarna så sätts variabler globalt i klassen, currnetType, currnetListInView, för att
     //anpassa beteendet när event triggas till aktuell lista och aktuellt syfte
     public boolean populateGridPane(PopulateType type, List<Bike> bikeArray) {
+        System.out.println("När körs pupulate ");
         gridPane.getChildren().clear();
         returnBtn.setVisible(false);
         currentTypeInView = type;
         if (type == PopulateType.AVAILABLE_BIKES) {
+
             if (availableBikes.size() <= 3) {
                 netBtn.setVisible(false);
             } else {
@@ -258,6 +268,8 @@ public class MainVewController implements Initializable{
         } catch (Exception e) {
             e.printStackTrace();
         }
+        millisStop = Calendar.getInstance().getTimeInMillis();
+
         return true;
     }
 
@@ -317,6 +329,9 @@ public class MainVewController implements Initializable{
     public void nextBikesOnList(ActionEvent actionEvent) {
         gridPane.getChildren().clear();
         currentListInView.clear();
+        slideNumber++;
+        counter1.setText(slideNumber+"  /");
+       availableBikes.addAll( bikeReader.getBikeSet());
         if (currentTypeInView == PopulateType.AVAILABLE_BIKES) {
             if (availableBikes.size() >= 3) {
                 currentListInView = availableBikes.subList(0, 3);
@@ -445,33 +460,27 @@ public class MainVewController implements Initializable{
 
 
     public void searchAvailableBikesThread(ActionEvent actionEvent) {
+         millisStart = Calendar.getInstance().getTimeInMillis();
+
+        Bikes bikes = serverCall.getNextTenAvailableBikes(0, 4);
+        availableBikes = bikes.getBikes();
+        populateGridPane(PopulateType.AVAILABLE_BIKES, availableBikes);
+
         bikeReader = new BikeReader();
-        bikeReader.setNumberOfBikesToRead(4);
-        messageLabel.textProperty().bind(bikeReader.messageProperty());
-        ObservableList<Bike> bikesTest = (ObservableList<Bike>)  bikeReader.valueProperty().getValue();
+        bikeReader.setNumberOfBikesToRead(5);
+
+        counter.textProperty().bind(bikeReader.messageProperty());
+        slideNumber++;
+        counter1.setText(slideNumber+"  /");
+        ObservableList<Bike> bikesTest = (ObservableList<Bike>) bikeReader.valueProperty().getValue();
         obserableBikeList = FXCollections.<Bike>observableArrayList();
 
         Thread bikeGrabberThread = new Thread(bikeReader);
         bikeGrabberThread.setDaemon(true);
         bikeGrabberThread.start();
-        ((ObservableList<Bike>) bikeReader.valueProperty().getValue()).addListener(new ListChangeListener() {
-            @Override
-            public void onChanged(Change c) {
-                System.out.println("I on changed ");
-                ArrayList<Bike> bikeList = new ArrayList<>();
 
-                populateGridPane(PopulateType.AVAILABLE_BIKES,bikeList);
-            }
-        });
 
-        for(int i = 0; i <10; i++) {
-            System.out.println(((ObservableList<Bike>) bikeReader.valueProperty().getValue()).size() + " efter start ");
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+
     }
 
 
@@ -509,6 +518,16 @@ public class MainVewController implements Initializable{
 
     public void setObserableBikeList(ObservableList<Bike> obserableBikeList) {
         this.obserableBikeList = obserableBikeList;
+    }
+
+    public void setMilliStop() {
+        double perc = (millisStop - millisStart) / 1000.0;
+        milliStopFinnish =  Calendar.getInstance().getTimeInMillis();
+        double total = (milliStopFinnish -millisStart) / 1000.0;
+        ServerCallImpl.getMesaurment().setTotalTimeSec(total);
+        ServerCallImpl.getMesaurment().setPerceivedTimeAvailableBikesSec(perc);
+        serverCall.insertPrestandaMeasurment(mesaurment, " Mätning av getAvailableBikes. Första tre läses först, därefter laddas cyklar i en annan tråd");
+
     }
 }
 
