@@ -5,7 +5,6 @@ import ServerConnecttion.ServerCallImpl;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.scene.Node;
 import view.Main;
 
 import java.util.ArrayList;
@@ -26,8 +25,6 @@ public class BikeReader extends Task {
 
 
     public BikeReader() {
-
-
         bikeList = new ArrayList<>();
         serverCall = new ServerCallImpl();
         bikeSet = new HashSet<>();
@@ -67,7 +64,7 @@ public class BikeReader extends Task {
                 bikeSet.addAll(bikesObject.getBikes());
                 if (bikesObject.getBikes().size() < numberOfBikesToRead) {
                     isStillFetching = false;
-                    Main.getSpider().getMainView().setMilliStop();
+                    Main.getSpider().getMainView().setMesaurmentStop();
                 }
             }
             Thread.sleep(100);
@@ -97,5 +94,13 @@ public class BikeReader extends Task {
 
     public void setStillFetching(boolean stillFetching) {
         isStillFetching = stillFetching;
+    }
+
+    public Bikes getBikesObject() {
+        return bikesObject;
+    }
+
+    public void setBikesObject(Bikes bikesObject) {
+        this.bikesObject = bikesObject;
     }
 }

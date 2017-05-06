@@ -224,28 +224,7 @@ public class ServerCallImpl implements ServerCall {
                 return bikes.getBikes();
             } else {
                 try {
-                   // ResponceCodeCecker.checkCode(code);
-                    /*
-                    Läsa in 10114 cyklar = 80050 millisekunder MISSLYCKAT
-                    Läsa in 5114 cyklar = 51740 millisekunder MISSLYCKAT
-                    Läsa in 4114 cyklar = 44635 millisekunder MISSLYCKAT
-                    Läsa in 3114 cyklar = 38240 millisekunder MISSLYCKAT
-                    Läsa in 2114 cyklar = 29717 millisekunder MISSLYCKAT
-                    Läsa in 1114 cyklar = 22131 millisekunder får respons 200, men error uppstår vid (String json = EntityUtils.toString(response.getEntity());
-                    Läsa in 1014 cyklar = 19851 millisekunder FUNKAR! MEN för att guit ska laddas helt tar det hela 33205
-                    Läsa in 1064 cyklar = 21389 milliseckunder får respons 200, men error uppstår vid (String json = EntityUtils.toString(response.getEntity());
-                    Läsa in 1054 cyklar = 20075 milliseckunder får respons 200, men error uppstår vid (String json = EntityUtils.toString(response.getEntity());
-                    Läsa in 1044 cyklar = 20274 milliseckunder får respons 200, men error uppstår vid (String json = EntityUtils.toString(response.getEntity());
-                    Läsa in 1034 cyklar = 19079 milliseckunder får respons 200, men error uppstår vid (String json = EntityUtils.toString(response.getEntity());
-                    Läsa in 1024 cyklar = 19409 milliseckunder får respons 200, men error uppstår vid (String json = EntityUtils.toString(response.getEntity());
-                    Läsa in 1019 cyklar = 18668 milliseckunder får respons 200, men error uppstår vid (String json = EntityUtils.toString(response.getEntity());
-                    Läsa in 1017 cyklar = 19570 millisekunder FUNKAR! MEN för att guit ska laddas helt tar det hela 35532
 
-                    4871 millisekunder går åt till att läsa från databasen
-                    1739 millisekunder går åt till att läsa från databas med index
-                    15051 millisekunder går åt till att göra om från objekt till json
-                    ungefär hälften av tiden går åt till att göra om från String till ojbekt
-                    */
                 }catch (Exception e) {
                     e.printStackTrace();
                     closeSession();
@@ -308,6 +287,7 @@ public class ServerCallImpl implements ServerCall {
     public Bike addBikeToDB(Bike newBike) {
         String urlString = "http://localhost:8080/text/resources/newBike";
         Bike returnedBike = null;
+        System.out.println("Här körs addBike i servercall " + newBike.getImageStream());
         try {
             Gson gson = new Gson();
             HttpClient client = HttpClientBuilder.create().build();
@@ -656,14 +636,18 @@ public class ServerCallImpl implements ServerCall {
             user.setSessionToken(token);
             user.setUserID(userID);
             prestandaMeasurement.setComment("Projekt BikeRentEX: " + comment);
+            System.out.println(prestandaMeasurement.getDbProcedureSec() + " i insert prestanda ");
             user.setMesaurment(prestandaMeasurement);
+
             String json = gson.toJson(user);
             HttpEntity entity = new StringEntity(json);
             requsetPost.setEntity(entity);
             HttpResponse response = client.execute(requsetPost);
             String code = response.getStatusLine().getStatusCode() + "";
+            System.out.println(" innan if " + code);
             if (response.getStatusLine().getStatusCode() == 200) {
                 String returnedJson = EntityUtils.toString(response.getEntity());
+                System.out.println(returnedJson + " i insert Mesaurment ");
             } else {
                 ResponceCodeCecker.checkCode(code);
                 closeSession();
@@ -681,6 +665,7 @@ public class ServerCallImpl implements ServerCall {
     @Override
     public Bikes getNextTenAvailableBikes(int i, int numberOfBikesRead) {
         String urlString = "http://localhost:8080/text/resources/nextTenAvailableBikes";
+        PrestandaMeasurement mesaurment = Main.getSpider().getMainView().getPrestandaMesaurment();
         Gson gson = new Gson();
         Bikes returnBikes = null;
         try {
@@ -697,17 +682,23 @@ public class ServerCallImpl implements ServerCall {
             Bikes bikes = new Bikes();
             bikes.setNumberOfBikesRead(numberOfBikesRead);
             bikes.setTenNextfromInt(i);
+            bikes.setPrestandaMeasurement(mesaurment);
             mvi.setBikes(bikes);
             String json = gson.toJson(mvi);
             HttpEntity entity = new StringEntity(json);
             requsetPost.setEntity(entity);
+            long millistart =  Calendar.getInstance().getTimeInMillis();
             HttpResponse response = client.execute(requsetPost);
+            long millistop =  Calendar.getInstance().getTimeInMillis();
+            double execute = (millistop-millistart)/1000.0;
+
             String code = response.getStatusLine().getStatusCode() + "";
-            System.out.println();
             if (response.getStatusLine().getStatusCode() == 200) {
                 String returnedJson = EntityUtils.toString(response.getEntity());
                 Gson gson1 = new Gson();
                  returnBikes = gson1.fromJson(returnedJson,Bikes.class);
+                 returnBikes.getPrestandaMeasurement().setExecuteSec(execute);
+                System.out.println(returnBikes.getPrestandaMeasurement().getDbProcedureSec() + " i servercall procedur i get next ");
                 return returnBikes;
             } else {
                 ResponceCodeCecker.checkCode(code);

@@ -132,6 +132,8 @@ public class MainVewController implements Initializable{
         combobox.getItems().clear();
         currentListInView.clear();
         netBtn.setDisable(true);
+        counter.setVisible(false);
+        counter1.setText("");
     }
 
     public void populateUserTextInGUI(BikeUser bikeUser) {
@@ -268,8 +270,6 @@ public class MainVewController implements Initializable{
         } catch (Exception e) {
             e.printStackTrace();
         }
-        millisStop = Calendar.getInstance().getTimeInMillis();
-
         return true;
     }
 
@@ -330,7 +330,7 @@ public class MainVewController implements Initializable{
         gridPane.getChildren().clear();
         currentListInView.clear();
         slideNumber++;
-        counter1.setText(slideNumber+"  /");
+        counter1.setText("Sidan " + slideNumber+"  /");
        availableBikes.addAll( bikeReader.getBikeSet());
         if (currentTypeInView == PopulateType.AVAILABLE_BIKES) {
             if (availableBikes.size() >= 3) {
@@ -461,47 +461,22 @@ public class MainVewController implements Initializable{
 
     public void searchAvailableBikesThread(ActionEvent actionEvent) {
          millisStart = Calendar.getInstance().getTimeInMillis();
-
         Bikes bikes = serverCall.getNextTenAvailableBikes(0, 4);
         availableBikes = bikes.getBikes();
         populateGridPane(PopulateType.AVAILABLE_BIKES, availableBikes);
-
+        millisStop = Calendar.getInstance().getTimeInMillis();
         bikeReader = new BikeReader();
         bikeReader.setNumberOfBikesToRead(5);
 
         counter.textProperty().bind(bikeReader.messageProperty());
-        slideNumber++;
-        counter1.setText(slideNumber+"  /");
+        slideNumber = 1;
+        counter1.setText("Sida "+slideNumber+"  /");
         ObservableList<Bike> bikesTest = (ObservableList<Bike>) bikeReader.valueProperty().getValue();
         obserableBikeList = FXCollections.<Bike>observableArrayList();
 
         Thread bikeGrabberThread = new Thread(bikeReader);
         bikeGrabberThread.setDaemon(true);
         bikeGrabberThread.start();
-
-
-
-    }
-
-
-    public void updateMainGui() {
-        System.out.println("Kär körs update i mainView " + Thread.currentThread().getId());
-        System.out.println(java.lang.Thread.activeCount() + " antalet trådar ");
-
-        availableBikes = new ArrayList<>();
-        availableBikes.addAll(bikeReader.getBikeSet());
-        if (availableBikes.size() > 3) {
-            currentListInView = availableBikes.subList(0, 3);
-            populateGridPane(PopulateType.AVAILABLE_BIKES, currentListInView);
-        }
-    }
-
-    public Label getMessageLabel() {
-        return messageLabel;
-    }
-
-    public void setMessageLabel(Label messageLabel) {
-        this.messageLabel = messageLabel;
     }
 
     public ObservableList<Node> getObserableGrid() {
@@ -520,12 +495,20 @@ public class MainVewController implements Initializable{
         this.obserableBikeList = obserableBikeList;
     }
 
-    public void setMilliStop() {
+    public void setMesaurmentStop() {
+        System.out.println("Här körs setMesaurmentStop");
+        PrestandaMeasurement pm = new PrestandaMeasurement();
         double perc = (millisStop - millisStart) / 1000.0;
         milliStopFinnish =  Calendar.getInstance().getTimeInMillis();
         double total = (milliStopFinnish -millisStart) / 1000.0;
-        ServerCallImpl.getMesaurment().setTotalTimeSec(total);
-        ServerCallImpl.getMesaurment().setPerceivedTimeAvailableBikesSec(perc);
+        System.out.println();
+        pm.setPerceivedTimeAvailableBikesSec(perc);
+        pm.setTotalTimeSec(total);
+        mesaurment = pm;
+        PrestandaMeasurement mpFromServer = bikeReader.getBikesObject().getPrestandaMeasurement();
+        mesaurment.setExecuteSec(mpFromServer.getExecuteSec());
+        mesaurment.setReadFromDbJdbcSec(mpFromServer.getReadFromDbJdbcSec());
+        mesaurment.setDbProcedureSec(mpFromServer.getDbProcedureSec());
         serverCall.insertPrestandaMeasurment(mesaurment, " Mätning av getAvailableBikes. Första tre läses först, därefter laddas cyklar i en annan tråd");
 
     }

@@ -85,8 +85,8 @@
             <Label id="memberLevelLabel" layoutX="406.0" layoutY="257.0" prefHeight="17.0" text="Tillgängliga cyklar:" />
             <Button fx:id="returnBtn" layoutX="347.0" layoutY="586.0" mnemonicParsing="false" onAction="#returnBike" text="Återlämna cykeln" />
             <Button layoutX="27.0" layoutY="586.0" mnemonicParsing="false" onAction="#closeSession" text="Logga ut" />
-            <Label fx:id="counter" layoutX="524.0" layoutY="271.0" prefHeight="25.0" prefWidth="27.0" />
-            <Label fx:id="counter1" layoutX="489.0" layoutY="271.0" prefHeight="25.0" prefWidth="27.0" />
+            <Label fx:id="counter" layoutX="524.0" layoutY="275.0" prefHeight="25.0" prefWidth="27.0" AnchorPane.topAnchor="275.0" />
+            <Label fx:id="counter1" layoutX="440.0" layoutY="275.0" prefHeight="25.0" prefWidth="64.0" AnchorPane.topAnchor="275.0" />
    
            </children>
        </AnchorPane>
