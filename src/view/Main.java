@@ -229,5 +229,13 @@ public class Main extends Application {
   public static void main(String[] args) {
     launch(args);
   }
+
+  public Scene getMainScene() {
+    return mainScene;
+  }
+
+  public void setMainScene(Scene mainScene) {
+    this.mainScene = mainScene;
+  }
 }
 

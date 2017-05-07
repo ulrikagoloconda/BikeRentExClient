@@ -53,7 +53,7 @@ public class BikeReader extends Task {
     @Override
     protected Object call() throws Exception {
 
-        while (isStillFetching) {
+       /* while (isStillFetching) {
             if (bikesObject == null) {
                 bikesObject = serverCall.getNextTenAvailableBikes(0, numberOfBikesToRead);
                 bikeSet.addAll(bikesObject.getBikes());
@@ -69,6 +69,23 @@ public class BikeReader extends Task {
             }
             Thread.sleep(100);
             updateMessage((obserableList.size()/3)+"");
+            updateGui();
+        }*/
+
+        for (int i = 0; i < 10; i++) {
+            if (bikesObject == null) {
+                bikesObject = serverCall.getNextTenAvailableBikes(0, numberOfBikesToRead);
+                bikeSet.addAll(bikesObject.getBikes());
+
+            } else {
+                bikesObject = serverCall.getNextTenAvailableBikes(bikesObject.getTenNextfromInt(), numberOfBikesToRead);
+                bikeSet.addAll(bikesObject.getBikes());
+                if (i==9) {
+                    Main.getSpider().getMainView().setMesaurmentStop();
+                }
+            }
+            Thread.sleep(100);
+            updateMessage((obserableList.size() / 3) + "");
             updateGui();
         }
         return null;

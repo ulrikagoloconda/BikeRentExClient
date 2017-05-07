@@ -8,6 +8,7 @@ import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.scene.Cursor;
 import model.*;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
@@ -115,6 +116,7 @@ public class MainVewController implements Initializable{
     }
 
     public void restartMainGui(){
+        closeThred();
         BikeUser user = Main.getSpider().getMain().getMvi().getCurrentUser();
         if(user.getMemberLevel() >= 10){
             adminBtn.setVisible(true);
@@ -330,8 +332,8 @@ public class MainVewController implements Initializable{
         gridPane.getChildren().clear();
         currentListInView.clear();
         slideNumber++;
-        counter1.setText("Sidan " + slideNumber+"  /");
-       availableBikes.addAll( bikeReader.getBikeSet());
+        counter1.setText("Sidan " + slideNumber + "  /");
+        availableBikes.addAll(bikeReader.getBikeSet());
         if (currentTypeInView == PopulateType.AVAILABLE_BIKES) {
             if (availableBikes.size() >= 3) {
                 currentListInView = availableBikes.subList(0, 3);
@@ -346,7 +348,10 @@ public class MainVewController implements Initializable{
             }
         }
         populateGridPane(currentTypeInView, currentListInView);
-
+        String stringNumber = slideNumber + "";
+        if (stringNumber.equals(bikeReader.getMessage())) {
+            netBtn.setDisable(true);
+        }
     }
 
     public void showChangeUserView(ActionEvent actionEvent) {
@@ -354,6 +359,7 @@ public class MainVewController implements Initializable{
     }
 
     public void executeBikeLoan(ActionEvent actionEvent) {
+        closeThred();
         Bike b = serverCall.getSingleBike(selectedFromGrid);
         if (b.isAvailable()) {
             Bike rentedBike = serverCall.executeBikeLoan(b.getBikeID());
@@ -405,6 +411,8 @@ public class MainVewController implements Initializable{
     }
 
     public void showUsersBikes(ActionEvent actionEvent) {
+        closeThred();
+        cleanMainGui();
         usersCurrentBikes = Main.getSpider().getMain().getMvi().getCurrentUser().getCurrentBikeLoans();
 
         if (usersCurrentBikes.size() > 3) {
@@ -460,6 +468,10 @@ public class MainVewController implements Initializable{
 
 
     public void searchAvailableBikesThread(ActionEvent actionEvent) {
+        Main.getSpider().getMain().getMainScene().setCursor(Cursor.WAIT);
+        closeThred();
+        cleanMainGui();
+        counter.setVisible(true);
          millisStart = Calendar.getInstance().getTimeInMillis();
         Bikes bikes = serverCall.getNextTenAvailableBikes(0, 4);
         availableBikes = bikes.getBikes();
@@ -471,12 +483,26 @@ public class MainVewController implements Initializable{
         counter.textProperty().bind(bikeReader.messageProperty());
         slideNumber = 1;
         counter1.setText("Sida "+slideNumber+"  /");
-        ObservableList<Bike> bikesTest = (ObservableList<Bike>) bikeReader.valueProperty().getValue();
         obserableBikeList = FXCollections.<Bike>observableArrayList();
-
         Thread bikeGrabberThread = new Thread(bikeReader);
         bikeGrabberThread.setDaemon(true);
         bikeGrabberThread.start();
+
+        boolean stillWaiting = true;
+        while (stillWaiting) {
+            if(availableBikes.size()<6) {
+                System.out.println(" i still vaiting ");
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }else {
+                stillWaiting = false;
+                System.out.println(" i still vaiting else ");
+                Main.getSpider().getMain().getMainScene().setCursor(Cursor.DEFAULT);
+            }
+        }
     }
 
     public ObservableList<Node> getObserableGrid() {
@@ -511,6 +537,13 @@ public class MainVewController implements Initializable{
         mesaurment.setDbProcedureSec(mpFromServer.getDbProcedureSec());
         serverCall.insertPrestandaMeasurment(mesaurment, " Mätning av getAvailableBikes. Första tre läses först, därefter laddas cyklar i en annan tråd");
 
+    }
+
+    public void closeThred(){
+        if(bikeReader!=null) {
+            bikeReader.cancel();
+            counter.setVisible(false);
+        }
     }
 }
 
