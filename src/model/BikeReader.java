@@ -5,6 +5,7 @@ import ServerConnecttion.ServerCallImpl;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.scene.Cursor;
 import view.Main;
 
 import java.util.ArrayList;
@@ -95,6 +96,9 @@ public class BikeReader extends Task {
         obserableList.clear();
         obserableList.addAll(bikeSet);
         updateValue(obserableList);
+        if(obserableList.size()>3){
+            Main.getSpider().getMain().getMainScene().setCursor(Cursor.DEFAULT);
+        }
    }
 
     public ObservableList<Bike> getObserableList() {

@@ -331,10 +331,11 @@ public class MainVewController implements Initializable{
     public void nextBikesOnList(ActionEvent actionEvent) {
         gridPane.getChildren().clear();
         currentListInView.clear();
-        slideNumber++;
-        counter1.setText("Sidan " + slideNumber + "  /");
-        availableBikes.addAll(bikeReader.getBikeSet());
+
         if (currentTypeInView == PopulateType.AVAILABLE_BIKES) {
+            slideNumber++;
+            counter1.setText("Sidan " + slideNumber + "  /");
+            availableBikes.addAll(bikeReader.getBikeSet());
             if (availableBikes.size() >= 3) {
                 currentListInView = availableBikes.subList(0, 3);
             } else {
@@ -348,10 +349,6 @@ public class MainVewController implements Initializable{
             }
         }
         populateGridPane(currentTypeInView, currentListInView);
-        String stringNumber = slideNumber + "";
-        if (stringNumber.equals(bikeReader.getMessage())) {
-            netBtn.setDisable(true);
-        }
     }
 
     public void showChangeUserView(ActionEvent actionEvent) {
@@ -363,7 +360,6 @@ public class MainVewController implements Initializable{
         Bike b = serverCall.getSingleBike(selectedFromGrid);
         if (b.isAvailable()) {
             Bike rentedBike = serverCall.executeBikeLoan(b.getBikeID());
-           //messageLabel.setText("Cykeln är lånad till och med " + rentedBike.getDayOfReturn());
             Main.getSpider().getMain().showPupupInfo("Lån genomfört", "Ditt lån är nu genomomfört och \n den är tillgänglig för dig \n till och med " + rentedBike.getDayOfReturn(), "Ok, Jag fattar!");
             rentedBike.setAvailable(false);
             List<Bike> bikeList = new ArrayList<>();
@@ -487,22 +483,9 @@ public class MainVewController implements Initializable{
         Thread bikeGrabberThread = new Thread(bikeReader);
         bikeGrabberThread.setDaemon(true);
         bikeGrabberThread.start();
+        Main.getSpider().getMain().getMainScene().setCursor(Cursor.DEFAULT);
 
-        boolean stillWaiting = true;
-        while (stillWaiting) {
-            if(availableBikes.size()<6) {
-                System.out.println(" i still vaiting ");
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }else {
-                stillWaiting = false;
-                System.out.println(" i still vaiting else ");
-                Main.getSpider().getMain().getMainScene().setCursor(Cursor.DEFAULT);
-            }
-        }
+
     }
 
     public ObservableList<Node> getObserableGrid() {
