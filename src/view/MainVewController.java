@@ -28,6 +28,7 @@ import javafx.scene.text.FontWeight;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -223,6 +224,9 @@ public class MainVewController implements Initializable{
             for (Bike b : bikeArray) {
                 values.clear();
                 values.add("" + b.getModelYear());
+              //  charset="ISO-8859-1"
+               // String  = Charset.forName(b.getColor());
+              //  b.getColor().
                 values.add(b.getColor());
                 values.add(b.getType());
                 values.add(b.getBrandName());
@@ -349,6 +353,14 @@ public class MainVewController implements Initializable{
             }
         }
         populateGridPane(currentTypeInView, currentListInView);
+        if(currentTypeInView == PopulateType.AVAILABLE_BIKES){
+            String slideString = slideNumber+"";
+            if(bikeReader.getMessage().equals(slideString)){
+                netBtn.setDisable(true);
+                closeThred();
+
+            }
+        }
     }
 
     public void showChangeUserView(ActionEvent actionEvent) {
@@ -465,6 +477,7 @@ public class MainVewController implements Initializable{
 
     public void searchAvailableBikesThread(ActionEvent actionEvent) {
         Main.getSpider().getMain().getMainScene().setCursor(Cursor.WAIT);
+        System.out.println("här blir det wait");
         closeThred();
         cleanMainGui();
         counter.setVisible(true);
@@ -523,6 +536,8 @@ public class MainVewController implements Initializable{
     }
 
     public void closeThred(){
+
+
         if(bikeReader!=null) {
             bikeReader.cancel();
             counter.setVisible(false);

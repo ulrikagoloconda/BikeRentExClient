@@ -97,6 +97,7 @@ public class BikeReader extends Task {
         obserableList.addAll(bikeSet);
         updateValue(obserableList);
         if(obserableList.size()>3){
+            System.out.println("Här blir det default");
             Main.getSpider().getMain().getMainScene().setCursor(Cursor.DEFAULT);
         }
    }
