@@ -636,7 +636,6 @@ public class ServerCallImpl implements ServerCall {
             user.setSessionToken(token);
             user.setUserID(userID);
             prestandaMeasurement.setComment("Projekt BikeRentEX: " + comment);
-            System.out.println(prestandaMeasurement.getDbProcedureSec() + " i insert prestanda ");
             user.setMesaurment(prestandaMeasurement);
 
             String json = gson.toJson(user);
@@ -644,10 +643,8 @@ public class ServerCallImpl implements ServerCall {
             requsetPost.setEntity(entity);
             HttpResponse response = client.execute(requsetPost);
             String code = response.getStatusLine().getStatusCode() + "";
-            System.out.println(" innan if " + code);
             if (response.getStatusLine().getStatusCode() == 200) {
                 String returnedJson = EntityUtils.toString(response.getEntity());
-                System.out.println(returnedJson + " i insert Mesaurment ");
             } else {
                 ResponceCodeCecker.checkCode(code);
                 closeSession();
@@ -699,6 +696,109 @@ public class ServerCallImpl implements ServerCall {
                  returnBikes = gson1.fromJson(returnedJson,Bikes.class);
                  returnBikes.getPrestandaMeasurement().setExecuteSec(execute);
                 System.out.println(returnBikes.getPrestandaMeasurement().getDbProcedureSec() + " i servercall procedur i get next ");
+                return returnBikes;
+            } else {
+                ResponceCodeCecker.checkCode(code);
+                closeSession();
+                Main.getSpider().getMain().showLoginView();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            ErrorView.showError("Serverfel", "Fel hos servern", "Försök igen senare", 0, new Exception(500 + "Fel hos server." + ""));
+            closeSession();
+            Main.getSpider().getMain().showLoginView();
+        }
+        return returnBikes;
+    }
+
+    @Override
+    public Bikes getNextTenAvailableBikes(int i, int numberOfBikesToRead, int userID) {
+        String urlString = "http://localhost:8080/text/resources/nextTenAvailableBikespreviousChoise";
+        PrestandaMeasurement mesaurment = Main.getSpider().getMainView().getPrestandaMesaurment();
+        Gson gson = new Gson();
+        Bikes returnBikes = null;
+        try {
+            HttpClient client = HttpClientBuilder.create().build();
+            HttpPost requsetPost = new HttpPost(urlString);
+            requsetPost.addHeader("User-Agent", USER_AGENT);
+            String token = Main.getSpider().getMain().getMainVI().getCurrentUser().getSessionToken();
+            BikeUser user = new BikeUser();
+            user.setSessionToken(token);
+            user.setUserID(userID);
+            MainViewInformaiton mvi = new MainViewInformaiton();
+            mvi.setCurrentUser(user);
+            Bikes bikes = new Bikes();
+            bikes.setNumberOfBikesRead(numberOfBikesToRead);
+            bikes.setTenNextfromInt(i);
+            bikes.setPrestandaMeasurement(mesaurment);
+            mvi.setBikes(bikes);
+            String json = gson.toJson(mvi);
+            HttpEntity entity = new StringEntity(json);
+            requsetPost.setEntity(entity);
+            long millistart =  Calendar.getInstance().getTimeInMillis();
+            HttpResponse response = client.execute(requsetPost);
+            long millistop =  Calendar.getInstance().getTimeInMillis();
+            double execute = (millistop-millistart)/1000.0;
+
+            String code = response.getStatusLine().getStatusCode() + "";
+            if (response.getStatusLine().getStatusCode() == 200) {
+                String returnedJson = EntityUtils.toString(response.getEntity());
+                Gson gson1 = new Gson();
+                returnBikes = gson1.fromJson(returnedJson,Bikes.class);
+                returnBikes.getPrestandaMeasurement().setExecuteSec(execute);
+                return returnBikes;
+            } else {
+                ResponceCodeCecker.checkCode(code);
+                closeSession();
+                Main.getSpider().getMain().showLoginView();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            ErrorView.showError("Serverfel", "Fel hos servern", "Försök igen senare", 0, new Exception(500 + "Fel hos server." + ""));
+            closeSession();
+            Main.getSpider().getMain().showLoginView();
+        }
+        return returnBikes;
+
+    }
+
+    @Override
+    public Bikes getNextTenAvailableBikesNotPrevious(Integer tenNextfromInt, int numberOfBikesToRead, int userID) {
+        String urlString = "http://localhost:8080/text/resources/nextTenAvailableBikesNotpreviousChoise";
+        PrestandaMeasurement mesaurment = Main.getSpider().getMainView().getPrestandaMesaurment();
+        Gson gson = new Gson();
+        Bikes returnBikes = null;
+        try {
+            HttpClient client = HttpClientBuilder.create().build();
+            HttpPost requsetPost = new HttpPost(urlString);
+            requsetPost.addHeader("User-Agent", USER_AGENT);
+            String token = Main.getSpider().getMain().getMainVI().getCurrentUser().getSessionToken();
+            BikeUser user = new BikeUser();
+            user.setSessionToken(token);
+            user.setUserID(userID);
+            MainViewInformaiton mvi = new MainViewInformaiton();
+            mvi.setCurrentUser(user);
+            Bikes bikes = new Bikes();
+            bikes.setNumberOfBikesRead(numberOfBikesToRead);
+            bikes.setTenNextfromInt(tenNextfromInt);
+            bikes.setPrestandaMeasurement(mesaurment);
+            mvi.setBikes(bikes);
+            String json = gson.toJson(mvi);
+            HttpEntity entity = new StringEntity(json);
+            requsetPost.setEntity(entity);
+            long millistart =  Calendar.getInstance().getTimeInMillis();
+            HttpResponse response = client.execute(requsetPost);
+            long millistop =  Calendar.getInstance().getTimeInMillis();
+            double execute = (millistop-millistart)/1000.0;
+
+            String code = response.getStatusLine().getStatusCode() + "";
+            if (response.getStatusLine().getStatusCode() == 200) {
+                String returnedJson = EntityUtils.toString(response.getEntity());
+                Gson gson1 = new Gson();
+                returnBikes = gson1.fromJson(returnedJson,Bikes.class);
+                returnBikes.getPrestandaMeasurement().setExecuteSec(execute);
                 return returnBikes;
             } else {
                 ResponceCodeCecker.checkCode(code);

@@ -53,37 +53,30 @@ public class BikeReader extends Task {
 
     @Override
     protected Object call() throws Exception {
-
-       /* while (isStillFetching) {
-            if (bikesObject == null) {
-                bikesObject = serverCall.getNextTenAvailableBikes(0, numberOfBikesToRead);
-                bikeSet.addAll(bikesObject.getBikes());
-
-            } else {
-
-                bikesObject = serverCall.getNextTenAvailableBikes(bikesObject.getTenNextfromInt(), numberOfBikesToRead);
-                bikeSet.addAll(bikesObject.getBikes());
-                if (bikesObject.getBikes().size() < numberOfBikesToRead) {
-                    isStillFetching = false;
-                    Main.getSpider().getMainView().setMesaurmentStop();
-                }
-            }
-            Thread.sleep(100);
-            updateMessage((obserableList.size()/3)+"");
-            updateGui();
-        }*/
-
+        int userID = Main.getSpider().getMain().getMainVI().getCurrentUser().getUserID();
         for (int i = 0; i < 10; i++) {
             if (bikesObject == null) {
-                bikesObject = serverCall.getNextTenAvailableBikes(0, numberOfBikesToRead);
-                bikeSet.addAll(bikesObject.getBikes());
+                bikesObject = serverCall.getNextTenAvailableBikes(0, numberOfBikesToRead,userID);
+                System.out.println("hämtats med id 1 gång");
+                if(bikesObject.getBikes().size()<1){
+                    readWithoutID();
+                    break;
+                }else {
+                    bikeSet.addAll(bikesObject.getBikes());
+                }
 
-            } else {
-                bikesObject = serverCall.getNextTenAvailableBikes(bikesObject.getTenNextfromInt(), numberOfBikesToRead);
+            }else if(i > 2) {
+                bikesObject = serverCall.getNextTenAvailableBikesNotPrevious(bikesObject.getTenNextfromInt(), numberOfBikesToRead,userID);
+                System.out.println("hämtats med id resten av gångerna gång");
                 bikeSet.addAll(bikesObject.getBikes());
                 if (i==9) {
                     Main.getSpider().getMainView().setMesaurmentStop();
                 }
+
+            } else {
+                bikesObject = serverCall.getNextTenAvailableBikes(bikesObject.getTenNextfromInt(), numberOfBikesToRead,userID);
+                System.out.println("hämtats med id resten av gångerna gång");
+                bikeSet.addAll(bikesObject.getBikes());
             }
             Thread.sleep(100);
             updateMessage((obserableList.size() / 3) + "");
@@ -92,12 +85,36 @@ public class BikeReader extends Task {
         return null;
     }
 
+    public void readWithoutID(){
+        System.out.println("Går in i read utan id");
+        for (int i = 0; i < 10; i++) {
+            if (bikesObject == null) {
+                bikesObject = serverCall.getNextTenAvailableBikes(0, numberOfBikesToRead);
+                    bikeSet.addAll(bikesObject.getBikes());
+
+            } else {
+                bikesObject = serverCall.getNextTenAvailableBikes(bikesObject.getTenNextfromInt(), numberOfBikesToRead);
+                bikeSet.addAll(bikesObject.getBikes());
+                if (i==9) {
+                    Main.getSpider().getMainView().setMesaurmentStop();
+                }
+            }
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            updateMessage((obserableList.size() / 3) + "");
+            updateGui();
+        }
+    }
+
    public void updateGui(){
         obserableList.clear();
         obserableList.addAll(bikeSet);
+
         updateValue(obserableList);
         if(obserableList.size()>3){
-            System.out.println("Här blir det default");
             Main.getSpider().getMain().getMainScene().setCursor(Cursor.DEFAULT);
         }
    }

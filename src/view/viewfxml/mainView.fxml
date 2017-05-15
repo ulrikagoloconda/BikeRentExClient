@@ -6,9 +6,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="651.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainVewController">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainVewController">
    <children>
-       <AnchorPane layoutY="26.0" prefHeight="651.0" prefWidth="600.0" AnchorPane.bottomAnchor="-26.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="26.0">
+       <AnchorPane layoutY="26.0" prefHeight="693.0" prefWidth="600.0" AnchorPane.bottomAnchor="-68.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="26.0">
            <children>
             <Label layoutX="202.0" layoutY="-25.0" prefHeight="45.0" prefWidth="401.0" text="Få hjulen att snurra – utan att bullra" textFill="#49a847" AnchorPane.rightAnchor="165.0">
                <font>
@@ -21,39 +21,46 @@
                   <Font size="16.0" />
                </font>
             </Label>
-            <AnchorPane fx:id="userInfoPane" layoutX="19.0" layoutY="40.0" prefHeight="119.0" prefWidth="245.0" AnchorPane.leftAnchor="35.0" AnchorPane.topAnchor="45.0">
+            <AnchorPane fx:id="userInfoPane" layoutX="19.0" layoutY="24.0" prefHeight="140.0" prefWidth="305.0" AnchorPane.leftAnchor="35.0" AnchorPane.topAnchor="24.0">
                <children>
-                  <Label text="Du är inloggad som: ">
+                  <Label text="Jag är inloggad som: ">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutY="24.0" prefHeight="17.0" text="userName: " AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="25.0" />
-                  <Label id="memberLevelLabel" layoutY="41.0" prefHeight="17.0" text="level:" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="45.0" />
-                  <Label layoutX="-3.0" layoutY="60.0" prefHeight="17.0" text="Totalt antal lånade cyklar:" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="65.0" />
-                  <Label layoutY="87.0" prefHeight="17.0" text="Aktuella lån: " AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="85.0" />
-                  <Button layoutX="195.0" layoutY="81.0" mnemonicParsing="false" onAction="#showChangeUserView" text="Ändra" AnchorPane.leftAnchor="195.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="85.0" />
-                  <Label id="numberOfLoanedBikesLabel" fx:id="numberOfLoanedBikesLabel" layoutX="146.0" layoutY="66.0" prefHeight="17.0" text="2" />
-                  <Label id="activeLoanLabel" fx:id="activeLoanLabel" layoutX="73.0" layoutY="85.0" prefHeight="17.0" text="0" />
+                  <Label layoutY="24.0" prefHeight="17.0" text="Användare:" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="25.0" />
+                  <Label id="memberLevelLabel" layoutY="41.0" prefHeight="17.0" text="Leve l:" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="45.0" />
+                  <Label layoutY="64.0" prefHeight="17.0" text="Jag har lånat totalt" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="64.0" />
+                  <Label layoutX="14.0" layoutY="117.0" prefHeight="17.0" text="Aktuella lån: " AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="117.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font></Label>
+                  <Button layoutX="149.0" layoutY="21.0" mnemonicParsing="false" onAction="#showChangeUserView" prefHeight="25.0" prefWidth="148.0" text="Ändra mina uppgifter" AnchorPane.leftAnchor="149.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="21.0" />
+                  <Label id="numberOfLoanedBikesLabel" fx:id="numberOfLoanedBikesLabel" layoutX="108.0" layoutY="64.0" prefHeight="17.0" prefWidth="20.0" text="2" />
+                  <Label id="activeLoanLabel" fx:id="activeLoanLabel" layoutX="107.0" layoutY="117.0" prefHeight="20.0" prefWidth="27.0" text="0">
+                     <font>
+                        <Font size="16.0" />
+                     </font></Label>
                   <Label id="memberLevelLabel" fx:id="memberLevelLabel" layoutX="31.0" layoutY="45.0" prefHeight="17.0" text="10" />
                   <Label id="userNameLabel" fx:id="userNameLabel" layoutX="63.0" layoutY="25.0" prefHeight="17.0" text="kalle 123" />
-                  <Button layoutX="194.0" layoutY="50.0" mnemonicParsing="false" onAction="#showUsersBikes" text="Aktuella lån" />
+                  <Button layoutX="151.0" layoutY="114.0" mnemonicParsing="false" onAction="#showUsersBikes" prefHeight="25.0" prefWidth="148.0" text="Visa mina aktuella lån" />
+                  <Label layoutX="128.0" layoutY="64.0" prefHeight="17.0" text="st cyklar" />
                </children>
             </AnchorPane>
-            <Label layoutX="209.0" layoutY="182.0" text="Vilken cykel söker du?">
+            <Label layoutX="209.0" layoutY="182.0" text="Vilken cykel söker jag?">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
             <ImageView fx:id="mainImage" fitHeight="108.0" fitWidth="160.0" layoutX="382.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="58.0" />
-            <Label layoutX="406.0" layoutY="182.0" text="Vill du se lite statistik? ">
+            <Label layoutX="406.0" layoutY="182.0" text="Vill jag se lite statistik? ">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
             <Button layoutX="404.0" layoutY="223.0" mnemonicParsing="false" onAction="#showStatClick" text="Visa statistik" />
             <Button fx:id="adminBtn" layoutX="434.0" layoutY="15.0" mnemonicParsing="false" onAction="#showAdminView" text="Administrera Bike Rent" />
-            <Button fx:id="executeLoanBtn" layoutX="464.0" layoutY="586.0" mnemonicParsing="false" onAction="#executeBikeLoan" text="Låna cykeln" AnchorPane.bottomAnchor="40.0" />
+            <Button fx:id="executeLoanBtn" layoutX="500.0" layoutY="309.0" mnemonicParsing="false" onAction="#executeBikeLoan" prefHeight="25.0" prefWidth="78.0" text="Låna cykeln" AnchorPane.bottomAnchor="408.0" AnchorPane.topAnchor="309.0" />
             <GridPane fx:id="gridPane" layoutX="27.0" layoutY="350.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="226.0" prefWidth="541.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
@@ -75,7 +82,7 @@
                   <ImageView fx:id="imageView2" fitHeight="62.0" fitWidth="89.0" layoutX="10.0" layoutY="108.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3" />
                </children>
             </GridPane>
-            <Button fx:id="netBtn" layoutX="492.0" layoutY="298.0" mnemonicParsing="false" onAction="#nextBikesOnList" text="Nästa -&gt;" />
+            <Button fx:id="netBtn" layoutX="470.0" layoutY="631.0" mnemonicParsing="false" onAction="#nextBikesOnList" prefHeight="25.0" prefWidth="108.0" text="Se fler cyklar" />
             <Label fx:id="messageLabel" layoutX="37.0" layoutY="287.0" prefHeight="34.0" prefWidth="446.0" AnchorPane.leftAnchor="37.0">
                <font>
                   <Font size="14.0" />
@@ -83,10 +90,15 @@
             <ComboBox fx:id="combobox" layoutX="209.0" layoutY="223.0" onAction="#setSearchResult" onInputMethodTextChanged="#popuateComboBox" onKeyPressed="#popuateComboBox" onKeyReleased="#popuateComboBox" prefWidth="150.0" />
             <Label id="memberLevelLabel" fx:id="statLabel" layoutX="511.0" layoutY="257.0" prefHeight="17.0" text="10" />
             <Label id="memberLevelLabel" layoutX="406.0" layoutY="257.0" prefHeight="17.0" text="Tillgängliga cyklar:" />
-            <Button fx:id="returnBtn" layoutX="347.0" layoutY="586.0" mnemonicParsing="false" onAction="#returnBike" text="Återlämna cykeln" />
-            <Button layoutX="27.0" layoutY="586.0" mnemonicParsing="false" onAction="#closeSession" text="Logga ut" />
-            <Label fx:id="counter" layoutX="524.0" layoutY="275.0" prefHeight="25.0" prefWidth="27.0" AnchorPane.topAnchor="275.0" />
-            <Label fx:id="counter1" layoutX="440.0" layoutY="275.0" prefHeight="25.0" prefWidth="64.0" AnchorPane.topAnchor="275.0" />
+            <Button fx:id="returnBtn" layoutX="470.0" layoutY="279.0" mnemonicParsing="false" onAction="#returnBike" text="Återlämna cykeln" />
+            <Button layoutX="27.0" layoutY="631.0" mnemonicParsing="false" onAction="#closeSession" text="Logga ut" />
+            <Label fx:id="counter" layoutX="542.0" layoutY="599.0" prefHeight="25.0" prefWidth="27.0" AnchorPane.topAnchor="599.0" />
+            <Label fx:id="counter1" layoutX="479.0" layoutY="600.0" prefHeight="25.0" prefWidth="64.0" AnchorPane.topAnchor="600.0" />
+            <Label layoutX="137.0" layoutY="635.0" prefHeight="17.0" prefWidth="254.0" text="Tryck på texten för att merkera en cykel!" textFill="#c37748">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
    
            </children>
        </AnchorPane>

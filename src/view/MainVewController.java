@@ -190,12 +190,10 @@ public class MainVewController implements Initializable{
     //I och m ed att event är kopplade till de olika användningarna så sätts variabler globalt i klassen, currnetType, currnetListInView, för att
     //anpassa beteendet när event triggas till aktuell lista och aktuellt syfte
     public boolean populateGridPane(PopulateType type, List<Bike> bikeArray) {
-        System.out.println("När körs pupulate ");
         gridPane.getChildren().clear();
         returnBtn.setVisible(false);
         currentTypeInView = type;
         if (type == PopulateType.AVAILABLE_BIKES) {
-
             if (availableBikes.size() <= 3) {
                 netBtn.setVisible(false);
             } else {
@@ -204,6 +202,7 @@ public class MainVewController implements Initializable{
             }
         }
         if (type == PopulateType.USERS_CURRENT_BIKES) {
+            executeLoanBtn.setVisible(false);
             if (usersCurrentBikes.size() <= 3) {
                 netBtn.setVisible(false);
             } else {
@@ -477,7 +476,6 @@ public class MainVewController implements Initializable{
 
     public void searchAvailableBikesThread(ActionEvent actionEvent) {
         Main.getSpider().getMain().getMainScene().setCursor(Cursor.WAIT);
-        System.out.println("här blir det wait");
         closeThred();
         cleanMainGui();
         counter.setVisible(true);
@@ -488,7 +486,6 @@ public class MainVewController implements Initializable{
         millisStop = Calendar.getInstance().getTimeInMillis();
         bikeReader = new BikeReader();
         bikeReader.setNumberOfBikesToRead(5);
-
         counter.textProperty().bind(bikeReader.messageProperty());
         slideNumber = 1;
         counter1.setText("Sida "+slideNumber+"  /");
@@ -545,3 +542,15 @@ public class MainVewController implements Initializable{
     }
 }
 
+/*
+
+
+TODO
+kolla alla rubriker och nivåer så att de överrensstämmer
+
+•
+•	Se till så att något händer omedelbart då en knapp trycks in.
+•	Flytta knappar i rutan där användarens uppgifter syns så att det framgår logiskt vad som är vad.
+•	Göra systemet smartare genom att sortera sökresultat utifrån användarens lånehistorik (förslaget kom från studieobjektet).
+
+ */

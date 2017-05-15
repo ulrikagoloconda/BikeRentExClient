@@ -54,4 +54,8 @@ public interface ServerCall {
     void insertPrestandaMeasurment(PrestandaMeasurement prestandaMeasurement, String comment);
 
     Bikes getNextTenAvailableBikes(int i, int numberOfBikesRead);
+
+    Bikes getNextTenAvailableBikes(int i, int numberOfBikesToRead, int userID);
+
+    Bikes getNextTenAvailableBikesNotPrevious(Integer tenNextfromInt, int numberOfBikesToRead, int userID);
 }
