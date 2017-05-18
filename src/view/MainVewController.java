@@ -8,6 +8,7 @@ import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.scene.Cursor;
 import model.*;
 import javafx.embed.swing.SwingFXUtils;
@@ -31,6 +32,7 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author Ulrika Goloconda Fahlén
@@ -58,6 +60,8 @@ public class MainVewController implements Initializable{
     private ComboBox<String> combobox;
     @FXML
     private Label userNameLabel, memberLevelLabel, activeLoanLabel, numberOfLoanedBikesLabel, statLabel;
+    @FXML
+    private ProgressIndicator progress;
 
     private Map<Node, Integer> idMap;
     private int selectedFromGrid;
@@ -75,6 +79,7 @@ public class MainVewController implements Initializable{
    private ObservableList<Node> obserableGrid;
     private ObservableList<Bike> obserableBikeList;
     private int slideNumber;
+    private boolean progressStopper;
     //Mätning av prestanda
     private  long millisStop;
     private long milliStopFinnish;
@@ -114,6 +119,8 @@ public class MainVewController implements Initializable{
         messageLabel.setWrapText(true);
         obserableGrid = gridPane.getChildren();
         slideNumber = 0;
+        progress.setVisible(false);
+
     }
 
     public void restartMainGui(){
@@ -194,6 +201,7 @@ public class MainVewController implements Initializable{
         returnBtn.setVisible(false);
         currentTypeInView = type;
         if (type == PopulateType.AVAILABLE_BIKES) {
+           stopProgress();
             if (availableBikes.size() <= 3) {
                 netBtn.setVisible(false);
             } else {
@@ -223,9 +231,6 @@ public class MainVewController implements Initializable{
             for (Bike b : bikeArray) {
                 values.clear();
                 values.add("" + b.getModelYear());
-              //  charset="ISO-8859-1"
-               // String  = Charset.forName(b.getColor());
-              //  b.getColor().
                 values.add(b.getColor());
                 values.add(b.getType());
                 values.add(b.getBrandName());
@@ -475,13 +480,73 @@ public class MainVewController implements Initializable{
 
 
     public void searchAvailableBikesThread(ActionEvent actionEvent) {
-        Main.getSpider().getMain().getMainScene().setCursor(Cursor.WAIT);
+        startProgress();
+        progress.setProgress(0.1);
         closeThred();
         cleanMainGui();
         counter.setVisible(true);
-         millisStart = Calendar.getInstance().getTimeInMillis();
-        Bikes bikes = serverCall.getNextTenAvailableBikes(0, 4);
-        availableBikes = bikes.getBikes();
+        millisStart = Calendar.getInstance().getTimeInMillis();
+        int userID = Main.getSpider().getMain().getMainVI().getCurrentUser().getUserID();
+        progress.setProgress(0.2);
+        Bikes bikes = null;
+        Task<Bikes> task = new Task<Bikes>() {
+            @Override
+            public Bikes call() throws Exception {
+                Bikes bikes = serverCall.getNextTenAvailableBikes(0, 4, userID);
+                return bikes;
+            }
+        };
+        new Thread(task).start();
+
+        progress.setProgress(0.3);
+
+        try {
+            bikes = task.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        progress.setProgress(0.4);
+        //Bikes bikes = serverCall.getNextTenAvailableBikes(0, 4,userID);
+        if(bikes.getBikes().size()<3) {
+             readBikesNoID();
+        } else {
+             availableBikes = bikes.getBikes();
+             Collections.shuffle(availableBikes);
+             populateGridPane(PopulateType.AVAILABLE_BIKES, availableBikes);
+             millisStop = Calendar.getInstance().getTimeInMillis();
+             progress.setProgress(0.4);
+             bikeReader = new BikeReader();
+             progress.progressProperty().bind(bikeReader.progressProperty());
+             bikeReader.setNumberOfBikesToRead(5);
+             counter.textProperty().bind(bikeReader.messageProperty());
+             slideNumber = 1;
+             counter1.setText("Sida " + slideNumber + "  /");
+             obserableBikeList = FXCollections.<Bike>observableArrayList();
+
+             Thread bikeGrabberThread = new Thread(bikeReader);
+             bikeGrabberThread.setDaemon(true);
+             bikeGrabberThread.start();
+         }
+    }
+
+    public void startProgress() {
+        progress.setProgress(56);
+       // progress.setVisible(true);
+
+    }
+
+    public void stopProgress(){
+       // progress.setProgress(0.7);
+       // progress.setVisible(false);
+    }
+
+    public void readBikesNoID(){
+        Bikes bikesNoID = serverCall.getNextTenAvailableBikes(0, 4);
+        availableBikes = bikesNoID.getBikes();
+        Collections.shuffle(availableBikes);
         populateGridPane(PopulateType.AVAILABLE_BIKES, availableBikes);
         millisStop = Calendar.getInstance().getTimeInMillis();
         bikeReader = new BikeReader();
@@ -493,9 +558,6 @@ public class MainVewController implements Initializable{
         Thread bikeGrabberThread = new Thread(bikeReader);
         bikeGrabberThread.setDaemon(true);
         bikeGrabberThread.start();
-        Main.getSpider().getMain().getMainScene().setCursor(Cursor.DEFAULT);
-
-
     }
 
     public ObservableList<Node> getObserableGrid() {
@@ -540,17 +602,25 @@ public class MainVewController implements Initializable{
             counter.setVisible(false);
         }
     }
+
+    public ProgressIndicator getProgress() {
+        return progress;
+    }
+
+    public void setProgress(ProgressIndicator progress) {
+        this.progress = progress;
+    }
 }
 
-/*
 
+
+/*
 
 TODO
 kolla alla rubriker och nivåer så att de överrensstämmer
 
 •
 •	Se till så att något händer omedelbart då en knapp trycks in.
-•	Flytta knappar i rutan där användarens uppgifter syns så att det framgår logiskt vad som är vad.
-•	Göra systemet smartare genom att sortera sökresultat utifrån användarens lånehistorik (förslaget kom från studieobjektet).
+
 
  */

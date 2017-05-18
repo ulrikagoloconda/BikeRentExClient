@@ -2,10 +2,12 @@ package model;
 
 import ServerConnecttion.ServerCall;
 import ServerConnecttion.ServerCallImpl;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.scene.Cursor;
+import javafx.scene.control.ProgressBar;
 import view.Main;
 
 import java.util.ArrayList;
@@ -53,6 +55,18 @@ public class BikeReader extends Task {
 
     @Override
     protected Object call() throws Exception {
+        //Platform.runLater();
+        //Main.getSpider().getMainView().getProgress().
+      //  Main.getSpider().getMainView().getProgress().progressProperty().bind(this.progressProperty());
+         int max = 100;
+        //for (int i = 1; i <= max; i++) {
+        //    updateProgress(i, max);
+        //    Thread.sleep(500);
+        //    System.out.println(i);
+        //}
+        double d = 0.1;
+
+        updateProgress(d, 1);
         int userID = Main.getSpider().getMain().getMainVI().getCurrentUser().getUserID();
         for (int i = 0; i < 10; i++) {
             if (bikesObject == null) {
@@ -67,17 +81,19 @@ public class BikeReader extends Task {
 
             }else if(i > 2) {
                 bikesObject = serverCall.getNextTenAvailableBikesNotPrevious(bikesObject.getTenNextfromInt(), numberOfBikesToRead,userID);
-                System.out.println("hämtats med id resten av gångerna gång");
+                System.out.println("hämtat id resten av gångerna gång");
                 bikeSet.addAll(bikesObject.getBikes());
                 if (i==9) {
                     Main.getSpider().getMainView().setMesaurmentStop();
                 }
 
             } else {
-                bikesObject = serverCall.getNextTenAvailableBikes(bikesObject.getTenNextfromInt(), numberOfBikesToRead,userID);
+                bikesObject = serverCall.getNextTenAvailableBikesNotPrevious(bikesObject.getTenNextfromInt(), numberOfBikesToRead,userID);
                 System.out.println("hämtats med id resten av gångerna gång");
                 bikeSet.addAll(bikesObject.getBikes());
             }
+            d+=0.1;
+            updateProgress(d, 1);
             Thread.sleep(100);
             updateMessage((obserableList.size() / 3) + "");
             updateGui();
@@ -112,11 +128,7 @@ public class BikeReader extends Task {
    public void updateGui(){
         obserableList.clear();
         obserableList.addAll(bikeSet);
-
         updateValue(obserableList);
-        if(obserableList.size()>3){
-            Main.getSpider().getMain().getMainScene().setCursor(Cursor.DEFAULT);
-        }
    }
 
     public ObservableList<Bike> getObserableList() {

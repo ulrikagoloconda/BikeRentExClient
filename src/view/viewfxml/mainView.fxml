@@ -99,6 +99,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
+            <ProgressIndicator fx:id="progress" layoutX="264.0" layoutY="275.0" prefHeight="69.0" prefWidth="43.0" progress="0.0"  />
    
            </children>
        </AnchorPane>
